@@ -2,7 +2,6 @@ import pygame
 import sys
 from definitions import SCREEN_WIDTH, SCREEN_HEIGHT
 from level import Level
-from building import Enum_Build
 
 def main()->None:
     """
@@ -18,7 +17,7 @@ def main()->None:
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
-    #level = Level()
+    level = Level()
     running = True
     
     """
@@ -46,6 +45,5 @@ def main()->None:
     sys.exit()
     
 if __name__ == "__main__":
-    #main()
-    print(Enum_Build.Blood_Farm == 1)
+    main()
     

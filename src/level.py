@@ -6,7 +6,7 @@ from resource import Resources
 
 class Level:
     """Struct to hold all level data and objects """
-    def __init__(self):
+    def __init__(self)->None:
         self.background:list(list(BG_Tile)) #Multidimentional array of bg_tiles. bg_tile class yet to be added
         self.buildings:list(Building)
         self.chars:list(Character)
