@@ -34,7 +34,7 @@ class Level:
             for x in self.background[y]:
                 if self.cam.check_on_screen(x.ec):
                     screen.blit(x.ec.texture, 
-                    (x.ec.rect.x, x.ec.rect.y))
+                    (x.ec.rect.x - self.cam.offset.x, x.ec.rect.y - self.cam.offset.y))
                     #print(x.ec.rect.x)
                 else:
                     print(f"{x.ec.ID} was not displayed\n")

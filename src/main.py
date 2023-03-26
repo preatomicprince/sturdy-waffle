@@ -114,13 +114,19 @@ def main()->None:
         for i in level.button_list:
             i.draw(screen)
         
+        offset = (SCREEN_WIDTH/len(resources.items()))/2
+        pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(0,0, SCREEN_WIDTH, 40))
         for i, (key, value) in enumerate(resources.items()):
             text = f"{key}: {value}"
-            name_res = pygame.font.Font(Path("./res/BACKTO1982.TTF"), 20)
+            name_res = pygame.font.Font(Path("./res/themponewst.ttf"), 25)
             text_surface = name_res.render(text, False, (64, 64, 64))
             rect_surf = text_surface.get_rect()
+            offset = i*(SCREEN_WIDTH/len(resources.items())) + 25
+            rect_surf.x = offset
             screen.blit(text_surface, rect_surf)
-
+            rect_surf.w = SCREEN_WIDTH
+            rect_surf.x = 0
+            print(f"{rect_surf.h}\n")
         
         pygame.display.update()
         #print(clock.get_fps())
