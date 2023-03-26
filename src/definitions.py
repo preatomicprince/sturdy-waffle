@@ -3,8 +3,8 @@ SCREEN_WIDTH = 700
 FPS = 60 #Currrently unused. Can be added to clock.tick() in main loop
 
 BG_TILE_SIZE = 16 #height and width length
-ROW_COUNT = 40
-COL_COUNT = 80
+ROW_COUNT = 20
+COL_COUNT = 40
 class I_Vec2:
     """"2D integer vector"""
     def __init__(self, x: int, y: int):
