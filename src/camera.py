@@ -5,7 +5,8 @@ from entity import Ent_Comp
 class Camera:
     def __init__(self):
         self.size = I_Vec2(SCREEN_WIDTH, SCREEN_HEIGHT)
-        self.offset = I_Vec2(0, 0) 
+        self.offset = I_Vec2(0, 0)
+        self.speed = 2 
 
     def check_on_screen(self,ec: Ent_Comp)-> int:
         return 1

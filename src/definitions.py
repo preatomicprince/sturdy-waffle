@@ -4,8 +4,9 @@ FPS = 60 #Currrently unused. Can be added to clock.tick() in main loop
 TOOLBAR_HEIGHT = 40
 
 BG_TILE_SIZE = 100 #height and width length
-ROW_COUNT = 20
-COL_COUNT = 40
+ROW_COUNT = 10
+COL_COUNT = 50
+
 class I_Vec2:
     """"2D integer vector"""
     def __init__(self, x: int, y: int):

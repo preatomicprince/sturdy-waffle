@@ -8,7 +8,7 @@ from resource import resources
 
   
 """these are all the key events and clicks"""
-def events():
+def events(level: Level):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -22,16 +22,16 @@ def events():
         
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                pass
+                level.keys_down.left = True
                 
             if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                pass
+                level.keys_down.right = True
                 
             if event.key == pygame.K_UP or event.key == pygame.K_w:
-                pass
+                level.keys_down.up = True
                 
             if event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                pass
+                level.keys_down.down = True
    
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
@@ -41,16 +41,16 @@ def events():
         if event.type == pygame.KEYUP:
         
             if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                pass
+                level.keys_down.left = False
                 
             if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                pass
+                level.keys_down.right = False
                 
             if event.key == pygame.K_UP or event.key == pygame.K_w:
-                pass
+                level.keys_down.up = False
                 
             if event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                pass
+                level.keys_down.down = False
             
 
 def main()->None:
@@ -107,7 +107,7 @@ def main()->None:
     #BEGIN GAME LOOP
     while running:
         """this checks for clicks and keyevents"""
-        events()
+        events(level)
         level.draw(screen)
         
         """this draws the buttons onto the screen"""
@@ -126,6 +126,8 @@ def main()->None:
             screen.blit(text_surface, rect_surf)
             rect_surf.w = SCREEN_WIDTH
             rect_surf.x = 0
+        
+        level.update()
         
         pygame.display.update()
         #print(clock.get_fps())

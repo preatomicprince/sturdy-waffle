@@ -1,10 +1,17 @@
 import pygame
-from definitions import F_Vec2, BG_TILE_SIZE, ROW_COUNT, TOOLBAR_HEIGHT
+from definitions import *
 from background import BG_Tile
 from building import Build_Comp, Building
 from character import Character
 from resource import resources
 from camera import Camera
+
+class Keys_Down:
+    def __init__(self):
+        self.left: bool = 0
+        self.right: bool = 0
+        self.up: bool = 0
+        self.down: bool = 0
 
 class Level:
     """Struct to hold all level data and objects """
@@ -14,6 +21,7 @@ class Level:
         self.chars:list(Character) = []
         self.res:dict = resources #count of player resources
         self.cam = Camera()
+        self.keys_down = Keys_Down()
         self.button_list = []
 
     def add_bg_tile(self, texture: str,  y_pos: float, coal: int = 0, stone: int = 0, wood: int = 0)->None:
@@ -42,6 +50,25 @@ class Level:
     def _update_buiding(self, building: Building):
             level.res = self.buildings[i].bc.update_level_res()
 
+    def _update_camera(self):
+        if self.keys_down.right:
+            self.cam.offset.x += self.cam.speed
+
+        if self.keys_down.left:
+            self.cam.offset.x -= self.cam.speed
+
+        if self.cam.offset.y <= ROW_COUNT*BG_TILE_SIZE - SCREEN_HEIGHT + TOOLBAR_HEIGHT:
+            if self.keys_down.down:
+                self.cam.offset.y += self.cam.speed
+
+        if self.cam.offset.y >= 0:
+            if self.keys_down.up:
+                self.cam.offset.y -= self.cam.speed
+
     def update(self):
+        self._update_camera()
         for i in self.buildings:
             self._update_buidings(self.buildings[i])
+        
+
+
