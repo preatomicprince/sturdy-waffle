@@ -125,7 +125,6 @@ def main()->None:
             screen.blit(text_surface, rect_surf)
             rect_surf.w = SCREEN_WIDTH
             rect_surf.x = 0
-            print(f"{rect_surf.h}\n")
         
         pygame.display.update()
         #print(clock.get_fps())
