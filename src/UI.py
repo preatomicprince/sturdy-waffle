@@ -5,8 +5,7 @@ class Buttons:
     """ this class creates a button, it collets the width/height of the button, selects its location"""
     
     def __init__(self, x, y, image, file, scale):
-        """width = file.get_width()
-        height = file.get_height() I NEED TO FIGURE OUT HOW TO MAKE THIS SCALE"""
+         
         
         self.x = x
         self.y = y
@@ -15,6 +14,8 @@ class Buttons:
         """self.image = pygame.transform.scale(image, (int(width * scale)), (int(height * scale))) """
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
+        width = self.image.get_width()
+        height = self.image.get_height() #I NEED TO FIGURE OUT HOW TO MAKE THIS SCALE
         
         """here we can see if the buttons been clicked"""
         self.clicked = False
