@@ -4,6 +4,7 @@ from background import BG_Tile
 from building import Build_Comp, Building
 from character import Character
 from resource import resources
+from camera import Camera
 
 class Level:
     """Struct to hold all level data and objects """
@@ -12,6 +13,7 @@ class Level:
         self.buildings:list(Building) = []
         self.chars:list(Character) = []
         self.res:dict = resources #count of player resources
+        self.cam = Camera()
     
     def add_bg_tile(self, texture: str,  y_pos: float, coal: int = 0, stone: int = 0, wood: int = 0)->None:
         """Adds tiles to background list, in the specified y_pos. 
@@ -29,8 +31,12 @@ class Level:
         
         for y in range(len(self.background)): #draw tiles
             for x in self.background[y]:
-                screen.blit(x.ec.texture, 
-                (x.ec.rect.x, x.ec.rect.y))
+                if self.cam.check_on_screen(x.ec):
+                    screen.blit(x.ec.texture, 
+                    (x.ec.rect.x, x.ec.rect.y))
+                    #print(x.ec.rect.x)
+                else:
+                    print(f"{x.ec.ID} was not displayed\n")
 
     def _update_buiding(self, building: Building):
             level.res = self.buildings[i].bc.update_level_res()
