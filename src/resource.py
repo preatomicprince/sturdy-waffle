@@ -6,9 +6,6 @@ stone: Used to build roads and perhaps some buidlings
 """
 from enum import Enum
 
-class Resources:
-    def __init__(self, blood: int = 0, coal: int = 0, stone: int = 0, wood: int = 0)->None:
-        self.blood = blood
-        self.coal = coal
-        self.stone = stone
-        self.wood = wood
+resources = {"Blood":0, "Coal":0, "Stone":0, "Wood":0, "pop":0, "Horse":0}
+
+    

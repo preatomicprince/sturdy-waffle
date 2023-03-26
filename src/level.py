@@ -1,9 +1,9 @@
 import pygame
 from definitions import F_Vec2, BG_TILE_SIZE, ROW_COUNT
 from background import BG_Tile
-from building import Building
+from building import Build_Comp, Building
 from character import Character
-from resource import Resources
+from resource import resources
 
 class Level:
     """Struct to hold all level data and objects """
@@ -11,7 +11,7 @@ class Level:
         self.background:list(list(BG_Tile)) = [[] for i in range(ROW_COUNT)] #NOTCURRENTLYMULTIDIMEN Multidimentional array of bg_tiles. bg_tile class yet to be added
         self.buildings:list(Building) = []
         self.chars:list(Character) = []
-        self.res:Resources = Resources() #count of player resources
+        self.res:dict = resources #count of player resources
     
     def add_bg_tile(self, texture: str,  y_pos: float, coal: int = 0, stone: int = 0, wood: int = 0)->None:
         """Adds tiles to background list, in the specified y_pos. 
@@ -31,3 +31,10 @@ class Level:
             for x in self.background[y]:
                 screen.blit(x.ec.texture, 
                 (x.ec.rect.x, x.ec.rect.y))
+
+    def _update_buiding(self, building: Building):
+            level.res = self.buildings[i].bc.update_level_res()
+
+    def update(self):
+        for i in self.buildings:
+            self._update_buidings(self.buildings[i])
