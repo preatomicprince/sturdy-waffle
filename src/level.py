@@ -14,7 +14,8 @@ class Level:
         self.chars:list(Character) = []
         self.res:dict = resources #count of player resources
         self.cam = Camera()
-    
+        self.button_list = []
+
     def add_bg_tile(self, texture: str,  y_pos: float, coal: int = 0, stone: int = 0, wood: int = 0)->None:
         """Adds tiles to background list, in the specified y_pos. 
         AUtomatically fills next blank square in X direction"""
