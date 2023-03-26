@@ -115,7 +115,7 @@ def main()->None:
             i.draw(screen)
         
         offset = (SCREEN_WIDTH/len(resources.items()))/2
-        pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(0,0, SCREEN_WIDTH, TOOLBAR_HEIGHT))
+        pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(0,0, SCREEN_WIDTH, TOOLBAR_HEIGHT+2))
         for i, (key, value) in enumerate(resources.items()):
             text = f"{key}: {value}"
             name_res = pygame.font.Font(Path("./res/themponewst.ttf"), 25)
@@ -133,9 +133,6 @@ def main()->None:
         #print(clock.get_fps())
         clock.tick() #Can add FPS argument to limit framerate
         #END GAME LOOP
-
-    pygame.quit()
-    sys.exit()
     
 if __name__ == "__main__":
     main()

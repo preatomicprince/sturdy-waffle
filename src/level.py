@@ -37,6 +37,8 @@ class Level:
             TODO:
             2. Characters
             3. Buildings"""
+
+        screen.fill((0,0,0))
         
         for y in range(len(self.background)): #draw tiles
             for x in self.background[y]:
@@ -64,6 +66,11 @@ class Level:
         if self.cam.offset.y >= 0:
             if self.keys_down.up:
                 self.cam.offset.y -= self.cam.speed
+
+        if  self.cam.offset.x >= ROW_COUNT*BG_TILE_SIZE:
+            self.cam.offset.x = 0
+        if self.cam.offset.x < 0:
+            self.cam.offset.x = ROW_COUNT*BG_TILE_SIZE
 
     def update(self):
         self._update_camera()
