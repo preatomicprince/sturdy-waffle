@@ -1,5 +1,5 @@
 import pygame
-from definitions import F_Vec2, BG_TILE_SIZE, ROW_COUNT
+from definitions import F_Vec2, BG_TILE_SIZE, ROW_COUNT, TOOLBAR_HEIGHT
 from background import BG_Tile
 from building import Build_Comp, Building
 from character import Character
@@ -34,7 +34,7 @@ class Level:
             for x in self.background[y]:
                 if self.cam.check_on_screen(x.ec):
                     screen.blit(x.ec.texture, 
-                    (x.ec.rect.x - self.cam.offset.x, x.ec.rect.y - self.cam.offset.y))
+                    (x.ec.rect.x - self.cam.offset.x, x.ec.rect.y - self.cam.offset.y + TOOLBAR_HEIGHT))
                     #print(x.ec.rect.x)
                 else:
                     print(f"{x.ec.ID} was not displayed\n")

@@ -1,7 +1,7 @@
 import pygame
 from pathlib import Path
 import sys
-from definitions import F_Vec2, FPS, SCREEN_WIDTH, SCREEN_HEIGHT, ROW_COUNT, COL_COUNT
+from definitions import F_Vec2, FPS, SCREEN_WIDTH, SCREEN_HEIGHT, ROW_COUNT, COL_COUNT, TOOLBAR_HEIGHT
 from level import Level
 from UI import Buttons
 from resource import resources
@@ -71,7 +71,7 @@ def main()->None:
     level = Level()
     for y in range(ROW_COUNT):
         for x in range(COL_COUNT):
-            level.add_bg_tile("./res/factory.png", y)
+            level.add_bg_tile("./res/test.png", y)
     
     house_button = Buttons(100, 650, "button",Path("./res/arrow_left.png"), 1)  
     level.button_list.append(house_button)  
@@ -115,7 +115,7 @@ def main()->None:
             i.draw(screen)
         
         offset = (SCREEN_WIDTH/len(resources.items()))/2
-        pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(0,0, SCREEN_WIDTH, 40))
+        pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(0,0, SCREEN_WIDTH, TOOLBAR_HEIGHT))
         for i, (key, value) in enumerate(resources.items()):
             text = f"{key}: {value}"
             name_res = pygame.font.Font(Path("./res/themponewst.ttf"), 25)

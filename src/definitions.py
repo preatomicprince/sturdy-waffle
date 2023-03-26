@@ -1,8 +1,9 @@
 SCREEN_HEIGHT = 700
 SCREEN_WIDTH = 900
 FPS = 60 #Currrently unused. Can be added to clock.tick() in main loop
+TOOLBAR_HEIGHT = 40
 
-BG_TILE_SIZE = 16 #height and width length
+BG_TILE_SIZE = 100 #height and width length
 ROW_COUNT = 20
 COL_COUNT = 40
 class I_Vec2:
