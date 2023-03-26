@@ -1,4 +1,5 @@
 from pathlib import Path
+import pygame
 
 class Buttons:
     """ this class creates a button, it collets the width/height of the button, selects its location"""
@@ -40,7 +41,7 @@ class Buttons:
 """this creates buttons that get added to a list thats blitted later on"""
 button_list = []
 
-house_button = Buttons(300, 300, "button","C:\Users\jstee\OneDrive\Desktop\python\ski_game_assets\arrow_left.png", 1)  
+house_button = Buttons(300, 300, "button",Path("./res/arrow_left.png"), 1)  
 button_list.append(house_button)  
 
 blood_farm_button = Buttons(300, 300, "button",Path("./res/arrow_left.png"), 1)    
