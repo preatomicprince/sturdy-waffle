@@ -1,5 +1,5 @@
-SCREEN_HEIGHT = 500
-SCREEN_WIDTH = 700
+SCREEN_HEIGHT = 700
+SCREEN_WIDTH = 900
 FPS = 60 #Currrently unused. Can be added to clock.tick() in main loop
 
 BG_TILE_SIZE = 16 #height and width length

@@ -3,6 +3,7 @@ import sys
 from definitions import F_Vec2, FPS, SCREEN_WIDTH, SCREEN_HEIGHT, ROW_COUNT, COL_COUNT
 from level import Level
 from UI import Buttons, button_list
+from resource import resources
 
   
 """these are all the key events and clicks"""
@@ -87,11 +88,20 @@ def main()->None:
     while running:
         """this checks for clicks and keyevents"""
         events()
-        """this draws the buttons onto the screen"""
-        """for i in button_list:
-            i.draw(screen)"""
-            
         level.draw(screen)
+        
+        """this draws the buttons onto the screen"""
+        for i in button_list:
+            i.draw(screen)
+        
+        for i, (key, value) in enumerate(resources.items()):
+            text = f"{key}: {value}"
+            name_res = pygame.font.Font(r'C:\Users\jstee\OneDrive\Desktop\python\BACKTO1982.ttf', 20)
+            text_surface = name_res.render(text, False, (64, 64, 64))
+            rect_surf = text_surface.get_rect()
+            screen.blit(text_surface, rect_surf)
+
+        
         pygame.display.update()
         #print(clock.get_fps())
         clock.tick() #Can add FPS argument to limit framerate
