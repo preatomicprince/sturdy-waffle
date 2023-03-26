@@ -68,7 +68,7 @@ def main()->None:
     level = Level()
     for y in range(ROW_COUNT):
         for x in range(COL_COUNT):
-            level.add_bg_tile("../res/factory.png", y)
+            level.add_bg_tile("./res/factory.png", y)
     running = True
     
     """
