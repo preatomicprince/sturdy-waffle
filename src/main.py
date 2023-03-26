@@ -74,7 +74,8 @@ def main()->None:
             level.add_bg_tile("./res/test.png", y)
     
     house_button = Buttons(100, 620, "button",Path("./res/house_button.png"), 1)
-
+    level.button_list.append(house_button)
+    
     blood_farm_button = Buttons(200, 650, "button",Path("./res/arrow_left.png"), 1)    
     level.button_list.append(blood_farm_button)
 
