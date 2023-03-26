@@ -10,6 +10,7 @@ def events():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+            sys.exit()
         
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
