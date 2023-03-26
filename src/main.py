@@ -116,7 +116,7 @@ def main()->None:
         
         for i, (key, value) in enumerate(resources.items()):
             text = f"{key}: {value}"
-            name_res = pygame.font.Font(Path("./res/BACKTO1982.ttf"), 20)
+            name_res = pygame.font.Font(Path("./res/BACKTO1982.TTF"), 20)
             text_surface = name_res.render(text, False, (64, 64, 64))
             rect_surf = text_surface.get_rect()
             screen.blit(text_surface, rect_surf)
