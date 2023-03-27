@@ -15,7 +15,11 @@ def events(level: Level)->None:
         
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                print("pressed")
+                level.left_click()
+                """
+                level.mouse.pos.x, level.mouse.pos.y = pygame.mouse.get_pos()
+                new_pos = level.mouse.pos+level.cam.offset
+                print(f"x:{int(new_pos.x/100)%COL_COUNT}, y:{int(new_pos.y/100)%ROW_COUNT}\n")"""
             if event.button == 3:
                 print("right")
         
@@ -75,6 +79,12 @@ def main()->None:
         for x in range(COL_COUNT):                                                                                           
             level.add_bg_tile("./res/test.png", y)
     
+    level.add_char("./res/factory.png", I_Vec2(100, 100))
+    level.chars[0].cc.aim = I_Vec2(200, 200)
+
+    level.add_char("./res/factory.png", I_Vec2(200, 200))
+    level.chars[1].cc.aim = I_Vec2(300, 350)
+
     house_button = Buttons(100, 620, "button",Path("./res/house_button.png"), 1)
     level.button_list.append(house_button)
     
@@ -94,6 +104,7 @@ def main()->None:
     level.button_list.append(lab_button)
 
     offset = (SCREEN_WIDTH/len(resources.items()))
+
     for i, (key, value) in enumerate(resources.items()):
             level.UI_text.append(Text(f"{key}: {value}", I_Vec2(i*offset + 25, 0)))
     
@@ -117,7 +128,7 @@ def main()->None:
 
         pygame.display.update()
         #print(clock.get_fps())
-        clock.tick() #Can add FPS argument to limit framerate
+        clock.tick(FPS) #Can add FPS argument to limit framerate
         #END GAME LOOP
     
 if __name__ == "__main__":
