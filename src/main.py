@@ -16,19 +16,19 @@ def events(level: Level)->None:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 level.left_click()
-                """
-                level.mouse.pos.x, level.mouse.pos.y = pygame.mouse.get_pos()
-                new_pos = level.mouse.pos+level.cam.offset
-                print(f"x:{int(new_pos.x/100)%COL_COUNT}, y:{int(new_pos.y/100)%ROW_COUNT}\n")"""
+                print("left\n")
             if event.button == 3:
-                print("right")
+                level.right_click()
+                print("Right\n")
         
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                 level.keys_down.left = True
+            
                 
             if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                 level.keys_down.right = True
+                
                 
             if event.key == pygame.K_UP or event.key == pygame.K_w:
                 level.keys_down.up = True
@@ -79,11 +79,9 @@ def main()->None:
         for x in range(COL_COUNT):                                                                                           
             level.add_bg_tile("./res/test.png", y)
     
-    level.add_char("./res/factory.png", I_Vec2(100, 100))
-    level.chars[0].cc.aim = I_Vec2(200, 200)
+    level.add_char("./res/testchar.png", I_Vec2(100, 100))
 
-    level.add_char("./res/factory.png", I_Vec2(200, 200))
-    level.chars[1].cc.aim = I_Vec2(300, 350)
+    level.add_char("./res/testchar.png", I_Vec2(200, 200))
 
     house_button = Buttons(100, 620, "button",Path("./res/house_button.png"), 1)
     level.button_list.append(house_button)

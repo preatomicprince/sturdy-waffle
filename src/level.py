@@ -17,13 +17,19 @@ class Keys_Down:
 class Mouse:
     def __init__(self):
         self.pos = I_Vec2(0,0)
-        self.ent_ID: int = 0
-        self.ent_type: type
+        self.ent_ID: int = None
+        self.ent_type: type = None
         # self.buiding: Building
     
     def update_pos(self)->I_Vec2:
         self.pos.x, self.pos.y = pygame.mouse.get_pos()
         return self.pos
+
+    def deselect(self)->None:
+        self.selected = False
+        self.ent_ID = None
+        self.ent_type = None
+
 class Level:
     """Struct to hold all level data and objects """
     def __init__(self)->None:
@@ -59,7 +65,7 @@ class Level:
         
         for y in range(len(self.background)): #draw tiles
             for x in self.background[y]:
-                if x.ec.rect.x > 0 or y > 0:
+                if x.ec.rect.x > 0 or x.ec.rect.y > 0:
                     screen.blit(x.ec.texture, 
                     (x.ec.rect.x - self.cam.offset.x, x.ec.rect.y - self.cam.offset.y))
                     if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH):
@@ -89,12 +95,12 @@ class Level:
             if char.cc.aim.x > char.ec.rect.x:
                 char.ec.rect.x += char.cc.vel.x
             elif char.cc.aim.x < char.ec.rect.x:
-                char.ec.rect.x += char.cc.vel.x
+                char.ec.rect.x -= char.cc.vel.x
 
             if char.cc.aim.y > char.ec.rect.y:
                 char.ec.rect.y += char.cc.vel.y
             elif char.cc.aim.y < char.ec.rect.y:
-                char.ec.rect.y += char.cc.vel.y
+                char.ec.rect.y -= char.cc.vel.y
 
         
 
@@ -133,17 +139,25 @@ class Level:
     def left_click(self):
         self.mouse.update_pos()
 
-        self.mouse.selected = False
-        self.mouse.ent_ID = None
-        self.mouse.ent_type = None
+        self.mouse.deselect()
 
         for ent in self.chars:
-            if ent.ec.rect.x < self.mouse.pos.x < ent.ec.rect.x + ent.ec.rect.w:
-                if ent.ec.rect.y < self.mouse.pos.y < ent.ec.rect.y + ent.ec.rect.h:
+            if ent.ec.rect.x - self.cam.offset.x < self.mouse.pos.x < ent.ec.rect.x + ent.ec.rect.w - self.cam.offset.x:
+                if ent.ec.rect.y - self.cam.offset.y < self.mouse.pos.y < ent.ec.rect.y + ent.ec.rect.h - self.cam.offset.y:
                     ent.ic.selected = True
                     self.mouse.ent_ID = ent.ec.ID
                     self.mouse.ent_type = type(ent)
-        print(f"{self.mouse.ent_ID}, {self.mouse.ent_type}\n")
+                    print("selected")
+
+    def right_click(self):
+        self.mouse.update_pos()
+        if self.mouse.ent_type is Character:
+            for char in self.chars:
+                if char.ec.ID == self.mouse.ent_ID:
+                    char.cc.aim = self.mouse.pos
+                    self.mouse.deselect()
+
+
         
 
         
