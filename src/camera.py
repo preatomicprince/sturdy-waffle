@@ -2,6 +2,7 @@ import pygame
 from definitions import SCREEN_HEIGHT, SCREEN_WIDTH, I_Vec2
 from entity import Ent_Comp
 
+"""comment"""
 class Camera:
     def __init__(self):
         self.size = I_Vec2(SCREEN_WIDTH, SCREEN_HEIGHT)
