@@ -52,7 +52,7 @@ class Level:
                         screen.blit(x.ec.texture, 
                         (x.ec.rect.x - self.cam.offset.x + COL_COUNT*BG_TILE_SIZE, x.ec.rect.y - self.cam.offset.y))
         pygame.draw.rect(screen, (255, 255, 255), 
-        pygame.Rect(0,0, SCREEN_WIDTH, TOOLBAR_HEIGHT+2)) #draw top toolbar
+                        pygame.Rect(0,0, SCREEN_WIDTH, TOOLBAR_HEIGHT+2)) #draw top toolbar
 
         for i in self.button_list:
             i.draw(screen)
@@ -72,13 +72,15 @@ class Level:
         if self.keys_down.left:
             self.cam.offset.x -= self.cam.speed
 
-        if self.cam.offset.y <= ROW_COUNT*BG_TILE_SIZE - SCREEN_HEIGHT: #+ TOOLBAR_HEIGHT
+        if self.cam.offset.y < ROW_COUNT*BG_TILE_SIZE - SCREEN_HEIGHT: #+ TOOLBAR_HEIGHT
             if self.keys_down.down:
                 self.cam.offset.y += self.cam.speed
+        else: self.cam.offset.y = ROW_COUNT*BG_TILE_SIZE - SCREEN_HEIGHT
 
-        if self.cam.offset.y >= 0:
+        if self.cam.offset.y > 0:
             if self.keys_down.up:
                 self.cam.offset.y -= self.cam.speed
+        else: self.cam.offset.y = 0
 
         if  self.cam.offset.x >= COL_COUNT*BG_TILE_SIZE:
             self.cam.offset.x = 0
