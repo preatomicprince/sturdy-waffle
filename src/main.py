@@ -70,7 +70,7 @@ def main()->None:
     clock = pygame.time.Clock()
     level = Level()
     for y in range(ROW_COUNT):
-        for x in range(COL_COUNT):
+        for x in range(COL_COUNT):                                                                                           
             level.add_bg_tile("./res/test.png", y)
     
     house_button = Buttons(100, 620, "button",Path("./res/house_button.png"), 1)
