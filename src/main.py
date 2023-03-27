@@ -2,7 +2,7 @@ import pygame
 from pathlib import Path
 import sys
 from definitions import *
-from level import Level
+from level import Level, level_append
 from UI import Buttons, Text
 from resource import resources
 
@@ -73,38 +73,9 @@ def main()->None:
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     level = Level()
-    running = True    
+    running = True
 
-    for y in range(ROW_COUNT):
-        for x in range(COL_COUNT):                                                                                           
-            level.add_bg_tile("./res/test.png", y)
-    
-    level.add_char("./res/testchar.png", I_Vec2(100, 100))
-
-    level.add_char("./res/testchar.png", I_Vec2(200, 200))
-
-    house_button = Buttons(100, 620, "button",Path("./res/house_button.png"), 1)
-    level.button_list.append(house_button)
-    
-    blood_farm_button = Buttons(200, 650, "button",Path("./res/arrow_left.png"), 1)    
-    level.button_list.append(blood_farm_button)
-
-    mine_button = Buttons(300, 650, "button",Path("./res/arrow_left.png"), 1)  
-    level.button_list.append(mine_button)  
-
-    lumber_mill_button = Buttons(400, 650, "button",Path("./res/arrow_left.png"), 1)    
-    level.button_list.append(lumber_mill_button)
-
-    stable_button = Buttons(500, 650, "button",Path("./res/arrow_left.png"), 1)  
-    level.button_list.append(stable_button)
-      
-    lab_button = Buttons(600, 650, "button",Path("./res/arrow_left.png"), 1)  
-    level.button_list.append(lab_button)
-
-    offset = (SCREEN_WIDTH/len(resources.items()))
-
-    for i, (key, value) in enumerate(resources.items()):
-            level.UI_text.append(Text(f"{key}: {value}", I_Vec2(i*offset + 25, 0)))
+    level_append(level)
     
     """
     *////////////////////////*
