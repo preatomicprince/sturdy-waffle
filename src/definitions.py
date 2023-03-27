@@ -13,6 +13,9 @@ class I_Vec2:
         self.x = x
         self.y = y
 
+    def __add__(self, other):
+        return I_Vec2(self.x + other.x, self.y + other.y)        
+
 class F_Vec2:
     """2D float vector"""
     def __init__(self, x: float, y: float):
