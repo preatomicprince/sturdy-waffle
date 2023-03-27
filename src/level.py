@@ -51,8 +51,12 @@ class Level:
         pygame.draw.rect(screen, (255, 255, 255), 
         pygame.Rect(0,0, SCREEN_WIDTH, TOOLBAR_HEIGHT+2)) #draw top toolbar
 
+        for i in self.button_list:
+            i.draw(screen)
+
         for i in self.UI_text:
             i.draw(screen)
+        
 
 
     def _update_buiding(self, building: Building):

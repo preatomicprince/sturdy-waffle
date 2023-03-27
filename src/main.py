@@ -6,9 +6,8 @@ from level import Level
 from UI import Buttons, Text
 from resource import resources
 
-  
-"""these are all the key events and clicks"""
-def events(level: Level):
+def events(level: Level)->None:
+    """this checks for clicks and keyevents"""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -55,13 +54,14 @@ def events(level: Level):
 
 def main()->None:
     """
+    Append objects to level
+
     Initialise pygame
 
     main game loop:
         1.Handle events
-        2.Update entities[TODO]
+        2.Update entities
         3.Draw
-
 
     quit and exit
     """
@@ -69,6 +69,8 @@ def main()->None:
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     level = Level()
+    running = True    
+
     for y in range(ROW_COUNT):
         for x in range(COL_COUNT):                                                                                           
             level.add_bg_tile("./res/test.png", y)
@@ -94,9 +96,6 @@ def main()->None:
     offset = (SCREEN_WIDTH/len(resources.items()))
     for i, (key, value) in enumerate(resources.items()):
             level.UI_text.append(Text(f"{key}: {value}", I_Vec2(i*offset + 25, 0)))
-
-    
-    running = True
     
     """
     *////////////////////////*
@@ -111,16 +110,11 @@ def main()->None:
 
     #BEGIN GAME LOOP
     while running:
-        """this checks for clicks and keyevents"""
+        
         events(level)
-        level.draw(screen)
-        
-        """this draws the buttons onto the screen"""
-        for i in level.button_list:
-            i.draw(screen)            
-        
         level.update()
-        
+        level.draw(screen)
+
         pygame.display.update()
         #print(clock.get_fps())
         clock.tick() #Can add FPS argument to limit framerate
