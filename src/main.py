@@ -1,9 +1,9 @@
 import pygame
 from pathlib import Path
 import sys
-from definitions import F_Vec2, FPS, SCREEN_WIDTH, SCREEN_HEIGHT, ROW_COUNT, COL_COUNT, TOOLBAR_HEIGHT
+from definitions import *
 from level import Level
-from UI import Buttons
+from UI import Buttons, Text
 from resource import resources
 
   
@@ -90,6 +90,11 @@ def main()->None:
       
     lab_button = Buttons(600, 650, "button",Path("./res/arrow_left.png"), 1)  
     level.button_list.append(lab_button)
+
+    offset = (SCREEN_WIDTH/len(resources.items()))
+    for i, (key, value) in enumerate(resources.items()):
+            level.UI_text.append(Text(f"{key}: {value}", I_Vec2(i*offset + 25, 0)))
+
     
     running = True
     
@@ -112,20 +117,7 @@ def main()->None:
         
         """this draws the buttons onto the screen"""
         for i in level.button_list:
-            i.draw(screen)
-        
-        offset = (SCREEN_WIDTH/len(resources.items()))/2
-        pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(0,0, SCREEN_WIDTH, TOOLBAR_HEIGHT+2))
-        for i, (key, value) in enumerate(resources.items()):
-            text = f"{key}: {value}"
-            name_res = pygame.font.Font(Path("./res/themponewst.ttf"), 25)
-            text_surface = name_res.render(text, False, (64, 64, 64))
-            rect_surf = text_surface.get_rect()
-            offset = i*(SCREEN_WIDTH/len(resources.items())) + 25
-            rect_surf.x = offset
-            screen.blit(text_surface, rect_surf)
-            rect_surf.w = SCREEN_WIDTH
-            rect_surf.x = 0
+            i.draw(screen)            
         
         level.update()
         

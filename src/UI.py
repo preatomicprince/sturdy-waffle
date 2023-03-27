@@ -1,12 +1,28 @@
 from pathlib import Path
+from definitions import *
 import pygame
+
+class Text:
+    font_path:str = "./res/themponewst.ttf"
+    colour = (64, 64, 64)
+    size = 25
+    def __init__(self, text:str, pos: I_Vec2):
+        self.text = text
+        self.pos = pos
+
+    def draw(self, screen: pygame.display):
+        name_res = pygame.font.Font(Path(Text.font_path), Text.size)
+        surface = name_res.render(self.text, False, Text.colour)
+        rect = surface.get_rect()
+        rect.x = self.pos.x
+        rect.y = self.pos.y        
+        screen.blit(surface, rect)
+
 
 class Buttons:
     """ this class creates a button, it collets the width/height of the button, selects its location"""
     
-    def __init__(self, x, y, image, file, scale):
-         
-        
+    def __init__(self, x, y, image, file, scale):        
         self.x = x
         self.y = y
         self.file = file

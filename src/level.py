@@ -23,6 +23,7 @@ class Level:
         self.cam = Camera()
         self.keys_down = Keys_Down()
         self.button_list = []
+        self.UI_text = []
 
     def add_bg_tile(self, texture: str,  y_pos: float, coal: int = 0, stone: int = 0, wood: int = 0)->None:
         """Adds tiles to background list, in the specified y_pos. 
@@ -34,9 +35,10 @@ class Level:
     def draw(self, screen: pygame.display)->None:
         """Draw all entities:
             1. BG_Tiles
+            2.UI
             TODO:
-            2. Characters
-            3. Buildings"""
+            3. Characters
+            4. Buildings"""
 
         screen.fill((0,0,0))
         
@@ -45,9 +47,13 @@ class Level:
                 if self.cam.check_on_screen(x.ec):
                     screen.blit(x.ec.texture, 
                     (x.ec.rect.x - self.cam.offset.x, x.ec.rect.y - self.cam.offset.y + TOOLBAR_HEIGHT))
-                    #print(x.ec.rect.x)
-                else:
-                    print(f"{x.ec.ID} was not displayed\n")
+
+        pygame.draw.rect(screen, (255, 255, 255), 
+        pygame.Rect(0,0, SCREEN_WIDTH, TOOLBAR_HEIGHT+2)) #draw top toolbar
+
+        for i in self.UI_text:
+            i.draw(screen)
+
 
     def _update_buiding(self, building: Building):
             level.res = self.buildings[i].bc.update_level_res()
