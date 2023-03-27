@@ -82,7 +82,8 @@ class Level:
                         screen.blit(character.ec.texture, 
                         (character.ec.rect.x - self.cam.offset.x + COL_COUNT*BG_TILE_SIZE, character.ec.rect.y - self.cam.offset.y))
         
-        pygame.draw.rect(screen, (255, 255, 255),pygame.Rect(0,0, SCREEN_WIDTH, TOOLBAR_HEIGHT+2)) #draw white toolbar
+        pygame.draw.rect(screen, (64, 64, 64),pygame.Rect(0,SCREEN_HEIGHT - 100, SCREEN_WIDTH, 100)) #draw white toolbar
+        pygame.draw.rect(screen, (128, 128, 180),pygame.Rect(0,SCREEN_HEIGHT - TOOLBAR_HEIGHT, SCREEN_WIDTH, TOOLBAR_HEIGHT)) #draw white toolbar
 
         for i in self.button_list:
             i.draw(screen)
@@ -170,28 +171,35 @@ def level_append(level: Level):
 
     level.add_char("./res/testchar.png", I_Vec2(200, 200))
 
-    house_button = Buttons(100, 620, "button",Path("./res/house_button.png"), 1)
+    house_button = Buttons(100, 605, "button",Path("./res/house_button.png"), 1)
     level.button_list.append(house_button)
     
-    blood_farm_button = Buttons(200, 650, "button",Path("./res/arrow_left.png"), 1)    
+    blood_farm_button = Buttons(200, 620, "button",Path("./res/arrow_left.png"), 1)    
     level.button_list.append(blood_farm_button)
 
-    mine_button = Buttons(300, 650, "button",Path("./res/arrow_left.png"), 1)  
+    mine_button = Buttons(300, 620, "button",Path("./res/arrow_left.png"), 1)  
     level.button_list.append(mine_button)  
 
-    lumber_mill_button = Buttons(400, 650, "button",Path("./res/arrow_left.png"), 1)    
+    lumber_mill_button = Buttons(400, 620, "button",Path("./res/arrow_left.png"), 1)    
     level.button_list.append(lumber_mill_button)
 
-    stable_button = Buttons(500, 650, "button",Path("./res/arrow_left.png"), 1)  
+    stable_button = Buttons(500, 620, "button",Path("./res/arrow_left.png"), 1)  
     level.button_list.append(stable_button)
       
-    lab_button = Buttons(600, 650, "button",Path("./res/arrow_left.png"), 1)  
+    lab_button = Buttons(600, 620, "button",Path("./res/arrow_left.png"), 1)  
     level.button_list.append(lab_button)
 
     offset = (SCREEN_WIDTH/len(resources.items()))
 
     for i, (key, value) in enumerate(resources.items()):
-            level.UI_text.append(Text(f"{key}: {value}", I_Vec2(i*offset + 25, 0)))
+        if key != "Pop. ":
+            level.UI_text.append(Text(f"{key}: {value}", I_Vec2(i*offset + 40, SCREEN_HEIGHT - TOOLBAR_HEIGHT+4)))
+        else:
+            print("dd")
+            blood_str = "Blood"
+            level.UI_text.append(Text(f"{key}: {value}/{resources[blood_str]}", I_Vec2(i*offset + 25, SCREEN_HEIGHT - TOOLBAR_HEIGHT)))
+
+
         
 
         

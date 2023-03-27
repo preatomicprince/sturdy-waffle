@@ -6,7 +6,7 @@ wood: Used to buidl buildings
 stone: Used to build roads and perhaps some buidlings
 """
 
-resources = {"Blood":0, "Coal":0, "Stone":0, "Wood":0, "Pop. ":0, "Horses":0}
+resources = {"Blood":0, "Coal":0, "Stone":0, "Wood":0, "Pop. ":0}
 
 
 

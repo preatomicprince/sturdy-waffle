@@ -1,5 +1,7 @@
 import pygame
 from level import Level
+import sys
+
 def events(level: Level)->None:
     """this checks for clicks and keyevents"""
     for event in pygame.event.get():
