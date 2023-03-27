@@ -2,7 +2,7 @@ import pygame
 from definitions import *
 from background import BG_Tile
 from building import Build_Comp, Building
-from character import Character
+from character import Character, Char_Comp
 from resource import resources
 from camera import Camera
 
@@ -32,6 +32,9 @@ class Level:
         pos = F_Vec2(column, y_pos*BG_TILE_SIZE)
         self.background[y_pos].append(BG_Tile(texture, pos))
 
+    def add_char(self, texture: str, pos: F_Vec2):
+        self.chars.append(Character(texture, pos))
+
     def draw(self, screen: pygame.display)->None:
         """Draw all entities:
             1. BG_Tiles
@@ -45,14 +48,21 @@ class Level:
         for y in range(len(self.background)): #draw tiles
             for x in self.background[y]:
                 if x.ec.rect.x > 0 or y > 0:
-                    if self.cam.check_on_screen(x.ec):
-                        screen.blit(x.ec.texture, 
-                        (x.ec.rect.x - self.cam.offset.x, x.ec.rect.y - self.cam.offset.y))
+                    screen.blit(x.ec.texture, 
+                    (x.ec.rect.x - self.cam.offset.x, x.ec.rect.y - self.cam.offset.y))
                     if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH):
                         screen.blit(x.ec.texture, 
                         (x.ec.rect.x - self.cam.offset.x + COL_COUNT*BG_TILE_SIZE, x.ec.rect.y - self.cam.offset.y))
-        pygame.draw.rect(screen, (255, 255, 255), 
-                        pygame.Rect(0,0, SCREEN_WIDTH, TOOLBAR_HEIGHT+2)) #draw top toolbar
+
+            
+        for character in self.chars:
+            screen.blit(character.ec.texture, (character.ec.rect.x - self.cam.offset.x, 
+                                                character.ec.rect.y - self.cam.offset.y))
+            if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH):
+                        screen.blit(character.ec.texture, 
+                        (character.ec.rect.x - self.cam.offset.x + COL_COUNT*BG_TILE_SIZE, character.ec.rect.y - self.cam.offset.y))
+        
+        pygame.draw.rect(screen, (255, 255, 255),pygame.Rect(0,0, SCREEN_WIDTH, TOOLBAR_HEIGHT+2)) #draw white toolbar
 
         for i in self.button_list:
             i.draw(screen)
@@ -60,7 +70,13 @@ class Level:
         for i in self.UI_text:
             i.draw(screen)
         
+    def _update_char(self, char: Character):
+        if char.cc.aim.x >= 0 and char.cc.aim.y >= 0:
+            char.ec.rect.x += char.cc.vel.x
+            char.ec.rect.y += char.cc.vel.y
 
+        if char.cc.aim == char.ec.rect:
+            char.cc.aim = I_Vec2(-1, -1)
 
     def _update_buiding(self, building: Building):
             level.res = self.buildings[i].bc.update_level_res()
@@ -89,8 +105,10 @@ class Level:
 
     def update(self):
         self._update_camera()
-        for i in self.buildings:
-            self._update_buidings(self.buildings[i])
+        for building in self.buildings:
+            self._update_buidings(building)
+        for character in self.chars:
+            self._update_char(character)
         
 
 

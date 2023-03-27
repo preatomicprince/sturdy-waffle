@@ -75,6 +75,9 @@ def main()->None:
         for x in range(COL_COUNT):                                                                                           
             level.add_bg_tile("./res/test.png", y)
     
+    level.add_char("./res/factory.png", I_Vec2(100, 100))
+    level.chars[0].cc.aim = I_Vec2(200, 200)
+
     house_button = Buttons(100, 620, "button",Path("./res/house_button.png"), 1)
     level.button_list.append(house_button)
     
@@ -94,6 +97,7 @@ def main()->None:
     level.button_list.append(lab_button)
 
     offset = (SCREEN_WIDTH/len(resources.items()))
+
     for i, (key, value) in enumerate(resources.items()):
             level.UI_text.append(Text(f"{key}: {value}", I_Vec2(i*offset + 25, 0)))
     
