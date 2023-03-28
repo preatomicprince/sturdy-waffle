@@ -38,7 +38,7 @@ class Level:
         self.background:list(list(BG_Tile)) = [[] for i in range(ROW_COUNT)] #NOTCURRENTLYMULTIDIMEN Multidimentional array of bg_tiles. bg_tile class yet to be added
         self.buildings:list(Building) = []
         self.chars:list(Character) = []
-        self.res:dict = resources #count of player resources
+        self.res:dict = copy(resources) #count of player resources
         self.cam = Camera()
         self.mouse = Mouse()
         self.keys_down = Keys_Down()
@@ -104,10 +104,8 @@ class Level:
             char.cc.aim = I_Vec2(-1, -1)
 
         if char.ec.rect.x >= COL_COUNT*BG_TILE_SIZE:
-            print("going right\n")
             char.ec.rect.x = 1
         if char.ec.rect.x < 0:
-            print("goin left\n")
             char.ec.rect.x = COL_COUNT*BG_TILE_SIZE - 1
 
         if char.cc.aim.x >= 0 or char.cc.aim.y >= 0:
@@ -128,7 +126,8 @@ class Level:
 
 
     def _update_buiding(self, building: Building):
-            self.res = building.bc.update_level_res(self.res)
+        self.res = building.bc.update_level_res(self.res)
+        
 
     def _update_mouse(self):
         if self.mouse.building != None:
@@ -157,9 +156,23 @@ class Level:
         if self.cam.offset.x < 0:
             self.cam.offset.x = COL_COUNT*BG_TILE_SIZE
 
+    def _update_text(self):
+        self.UI_text = []
+        offset = (SCREEN_WIDTH/len(resources.items()))
+        for i, (key, value) in enumerate(self.res.items()):
+            if key != "Pop. ":
+                self.UI_text.append(Text(f"{key}: {value}", I_Vec2(i*offset + 40, SCREEN_HEIGHT - TOOLBAR_HEIGHT+4)))
+            else:
+                blood_str = "Blood"
+                self.UI_text.append(Text(f"{key}: {value}/{self.res[blood_str]}", I_Vec2(i*offset + 25, SCREEN_HEIGHT - TOOLBAR_HEIGHT)))
+
+
+        
+
     def update(self):
         self._update_camera()
         self._update_mouse()
+        self._update_text()
         for building in self.buildings:
             self._update_buiding(building)
         for character in self.chars:
@@ -236,12 +249,12 @@ def level_append(level: Level):
 
     offset = (SCREEN_WIDTH/len(resources.items()))
 
-    for i, (key, value) in enumerate(resources.items()):
+    for i, (key, value) in enumerate(level.res.items()):
         if key != "Pop. ":
             level.UI_text.append(Text(f"{key}: {value}", I_Vec2(i*offset + 40, SCREEN_HEIGHT - TOOLBAR_HEIGHT+4)))
         else:
             blood_str = "Blood"
-            level.UI_text.append(Text(f"{key}: {value}/{resources[blood_str]}", I_Vec2(i*offset + 25, SCREEN_HEIGHT - TOOLBAR_HEIGHT)))
+            level.UI_text.append(Text(f"{key}: {value}/{level.res[blood_str]}", I_Vec2(i*offset + 25, SCREEN_HEIGHT - TOOLBAR_HEIGHT)))
 
 
         

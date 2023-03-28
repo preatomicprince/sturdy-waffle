@@ -9,16 +9,16 @@ laboratory: Used to develop more advanced versions of buidings
 import pygame
 from definitions import *
 from entity import Ent_Comp
+from copy import copy
 from resource import resources
 
 building_type = {1:"House", 2:"Blood_Farm", 3:"Mine", 4:"Lumber_Mill", 5:"Stable", 6:"Lab"}
 class Build_Comp:
     def __init__(self, b_type: int)->None:
-        self.res = resources #how many milliseconds it takes to produce each resource per workers
-        self.res_time = resources
+        self.res = copy(resources) #how many milliseconds it takes to produce each resource per workers
+        self.res_time = copy(resources)
         self.workers: list(Ent_Comp.ID) = []
         self.worker_cap = 3 #limit to number of workers 
-        self.clock = pygame.time.Clock()
 
     def add_worker(self, ec_ID: int)->int:
         if len(self.workers) < self.worker_cap:
@@ -30,12 +30,11 @@ class Build_Comp:
         return self.workers.pop()
 
     def update_level_res(self, level_res: resources)-> resources:
-        for i in self.res_time:
-            self.res_time[i] += self.clock.tick()
-
-            if self.res[i] <= self.res_time[i]:
-                level_res[i] += 1
-                self.res_time[i] = 0
+        for (key, value) in self.res_time.items():
+            self.res_time[key] += 1000/FPS
+            if self.res[key] <= self.res_time[key] and self.res[key] > 0:
+                level_res[key] += 1
+                self.res_time[key] = 0
 
         return level_res
 
@@ -45,7 +44,7 @@ class Building:
 
         if building_type[b_type] == "House":
             texture = "./res/house.png"
-            self.bc.res["pop"] = 60000
+            self.bc.res["Pop. "] = 1000
 
         elif building_type[b_type] == "Blood_Farm":
             texture = "../res/bloodfarm.png"
