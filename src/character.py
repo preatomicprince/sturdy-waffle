@@ -1,6 +1,6 @@
 import pygame
 from definitions import *
-from entity import Ent_Comp, Interact_Comp
+from entity import Ent_Comp
 
 class Char_Comp:
     speed = 1

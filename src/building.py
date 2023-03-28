@@ -8,7 +8,7 @@ laboratory: Used to develop more advanced versions of buidings
 """
 import pygame
 from definitions import F_Vec2
-from entity import Ent_Comp, Interact_Comp
+from entity import Ent_Comp
 from resource import resources
 
 build_type = {1:"House", 2:"Blood_Farm", 3:"Mine", 4:"Lumber_Mill", 5:"Stable", 6:"Lab"}
@@ -67,8 +67,6 @@ class Building:
         elif build_type[type] == "Lab":
             texture = "../res/lab.png"
 
-        
-        self.ic = Interact_Comp()
-        self.ec = ent_comp(texture, pos)
+            self.ec = ent_comp(texture, pos)
 
     
