@@ -10,7 +10,6 @@ class Ent_Comp:
         self.rect = self.texture.get_rect()
         self.rect.x = pos.x
         self.rect.y = pos.y
-        self.visible: bool = 1
-        
+        self.visible: bool = True
         self.ID = Ent_Comp.ent_count
         Ent_Comp.ent_count += 1

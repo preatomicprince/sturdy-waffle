@@ -76,11 +76,12 @@ class Level:
     
             
         for character in self.chars:
-            screen.blit(character.ec.texture, (character.ec.rect.x - self.cam.offset.x, 
-                                                character.ec.rect.y - self.cam.offset.y))
-            if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH):
-                        screen.blit(character.ec.texture, 
-                        (character.ec.rect.x - self.cam.offset.x + COL_COUNT*BG_TILE_SIZE, character.ec.rect.y - self.cam.offset.y))
+            if character.ec.visible:
+                screen.blit(character.ec.texture, (character.ec.rect.x - self.cam.offset.x, 
+                                                    character.ec.rect.y - self.cam.offset.y))
+                if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH):
+                            screen.blit(character.ec.texture, 
+                            (character.ec.rect.x - self.cam.offset.x + COL_COUNT*BG_TILE_SIZE, character.ec.rect.y - self.cam.offset.y))
         
         for building in self.buildings:
             screen.blit(building.ec.texture, ((building.ec.rect.x - self.cam.offset.x), 
@@ -101,6 +102,10 @@ class Level:
         
     def _update_char(self, char: Character):
         if char.cc.aim == char.ec.rect:
+            for building in self.buildings:
+                if pygame.Rect.colliderect(char.ec.rect, building.ec.rect):
+                    building.bc.add_worker(char.ec.ID)
+                    char.ec.visible = False
             char.cc.aim = I_Vec2(-1, -1)
 
         if char.ec.rect.x >= COL_COUNT*BG_TILE_SIZE:
@@ -165,9 +170,6 @@ class Level:
             else:
                 blood_str = "Blood"
                 self.UI_text.append(Text(f"{key}: {value}/{self.res[blood_str]}", I_Vec2(i*offset + 25, SCREEN_HEIGHT - TOOLBAR_HEIGHT)))
-
-
-        
 
     def update(self):
         self._update_camera()
