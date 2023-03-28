@@ -1,14 +1,15 @@
 import pygame
+from itertools import chain
 from copy import copy
 from definitions import *
 from background import BG_Tile
-from building import Build_Comp, Building
+from building import Build_Comp, Building, building_type
 from character import Character, Char_Comp
 from pathlib import Path
 from resource import resources
 from entity import Ent_Comp
 from camera import Camera
-from UI import Buttons, Text
+from UI import Buttons, Text, Tooltip
 
 class Keys_Down:
     def __init__(self):
@@ -22,6 +23,7 @@ class Mouse:
         self.pos = I_Vec2(0,0)
         self.ent_ID: int = None
         self.ent_type: type = None
+        self.tip = Tooltip()
         self.building: Building = None
     
     def update_pos(self)->None:
@@ -58,10 +60,9 @@ class Level:
     def draw(self, screen: pygame.display)->None:
         """Draw all entities:
             1. BG_Tiles
-            2.UI
-            3. Characters
-            TODO
-            4. Buildings"""
+            2. Characters
+            3. Buildings
+            4.UI"""
 
         screen.fill((0,0,0))
         
@@ -98,14 +99,24 @@ class Level:
             i.draw(screen)
 
         for i in self.UI_text:
+            Text.colour = (64, 64, 64)
             i.draw(screen)
+
+        if self.mouse.tip.visible:
+            pygame.draw.rect(screen, Tooltip.colour, self.mouse.tip.rect)
+
+            for i in self.mouse.tip.texts:
+                Text.colour = (128, 128, 180)
+                i.draw(screen)
+
         
     def _update_char(self, char: Character):
         if char.cc.aim == char.ec.rect:
             for building in self.buildings:
                 if pygame.Rect.colliderect(char.ec.rect, building.ec.rect):
-                    building.bc.add_worker(char.ec.ID)
-                    char.ec.visible = False
+                    if len(building.bc.workers) < building.bc.worker_cap:
+                        building.bc.add_worker(char.ec.ID)
+                        char.ec.visible = False
             char.cc.aim = I_Vec2(-1, -1)
 
         if char.ec.rect.x >= COL_COUNT*BG_TILE_SIZE:
@@ -135,9 +146,34 @@ class Level:
         
 
     def _update_mouse(self):
+        self.mouse.update_pos()
         if self.mouse.building != None:
-            self.mouse.update_pos()
             self.mouse.building.ec.rect.x, self.mouse.building.ec.rect.y = self.mouse.pos.x - self.mouse.pos.x%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE
+        self.mouse.tip.visible = False
+        for ent in chain(self.buildings, self.button_list):
+            if ent.ec.rect.collidepoint(self.mouse.pos.tup()):
+                self.mouse.tip.visible = True
+                self.mouse.tip.rect.x, self.mouse.tip.rect.y = ent.ec.rect.x + ent.ec.rect.w, ent.ec.rect.y
+                if type(ent) == Building:
+                    self.mouse.tip.texts = []
+                    self.mouse.tip.rect.w = 180
+                    self.mouse.tip.rect.h = 80
+                    self.mouse.tip.texts.append(Text(building_type[ent.bc.b_type], 
+                                                I_Vec2(self.mouse.tip.rect.x + 10, self.mouse.tip.rect.y)))
+                    self.mouse.tip.texts.append(Text(f"Workers: {len(ent.bc.workers)}/{ent.bc.worker_cap}",
+                                                I_Vec2(self.mouse.tip.rect.x + 10, self.mouse.tip.rect.y + 40)))
+                    for key, value in ent.bc.res.items():
+                        if ent.bc.res[key] != 0:
+                            self.mouse.tip.rect.h += 40
+                            timer = int(100*ent.bc.res_time[key]/ent.bc.res[key])
+                            self.mouse.tip.texts.append(Text(f"{key}+1: {timer}%",
+                                I_Vec2(self.mouse.tip.rect.x + 10, self.mouse.tip.rect.y + 80)))
+                    
+                elif type(ent) == Buttons:
+                    self.mouse.tip.texts = []
+                    self.mouse.tip.rect.w = 180
+                    self.mouse.tip.rect.h = 80
+                break
 
     def _update_camera(self):
         if self.keys_down.right:
@@ -232,9 +268,12 @@ def level_append(level: Level):
         for x in range(COL_COUNT):                                                                                           
             level.add_bg_tile("./res/test.png", y)
     
-    level.add_char("./res/testchar.png", I_Vec2(4950, 100))
+    level.add_char("./res/testchar.png", I_Vec2(200, 100))
 
     level.add_char("./res/testchar.png", I_Vec2(200, 200))
+    level.add_char("./res/testchar.png", I_Vec2(300, 200))
+    level.add_char("./res/testchar.png", I_Vec2(300, 300))
+
 
 
     level.button_list.append(Buttons(I_Vec2(100, 605), "./res/house_button.png", 1))

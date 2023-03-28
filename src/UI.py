@@ -6,7 +6,7 @@ from building import Building, building_type
 
 class Text:
     font_path:str = "./res/themponewst.ttf" #https://www.1001freefonts.com/thempo-new-st.font
-    colour = (64, 64, 64)
+    colour = (128, 128, 180)
     size = 25
     def __init__(self, text:str, pos: I_Vec2):
         self.text = text
@@ -33,6 +33,13 @@ class Buttons:
         
     def draw(self, screen):                
         """this turns the clicked off after its clicked"""            
-        screen.blit(self.ec.texture, (self.ec.rect.x, self.ec.rect.y))    
+        screen.blit(self.ec.texture, (self.ec.rect.x, self.ec.rect.y))
+
+class Tooltip:
+    colour = (64, 64, 64)
+    def __init__(self):
+        self.rect = pygame.Rect(0, 0, 0, 0)
+        self.texts: list(Text) = []
+        self.visible = False 
         
 
