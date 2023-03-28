@@ -259,11 +259,20 @@ class Level:
             if can_place:
                 self.buildings.append(Building(1, I_Vec2(self.mouse.pos.x - self.mouse.pos.x%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
 
+        for building in self.buildings:
+            if len(building.bc.workers) > 0 and self.mouse.ent_ID == None:
+                if building.ec.rect.collidepoint(self.mouse.pos.tup()):
+                    rm_id = building.bc.rm_worker()
+                    for char in self.chars:
+                        if char.ec.ID == rm_id:
+                            char.ec.visible = True
+                            char.ec.rect.x = building.ec.rect.x - BG_TILE_SIZE
+                            char.ec.rect.y = building.ec.rect.y
+                            break
+
         self.mouse.deselect()
 
 def level_append(level: Level):
-
-
     for y in range(ROW_COUNT):
         for x in range(COL_COUNT):                                                                                           
             level.add_bg_tile("./res/test.png", y)
