@@ -2,6 +2,7 @@ from pathlib import Path
 from definitions import *
 from entity import Ent_Comp
 import pygame
+from building import Building, building_type  
 
 class Text:
     font_path:str = "./res/themponewst.ttf" #https://www.1001freefonts.com/thempo-new-st.font
@@ -25,9 +26,10 @@ class Button_Comp:
 
 class Buttons:
     """ this class creates a button, it collets the width/height of the button, selects its location"""
-    def __init__(self, pos: F_Vec2, texture: str): 
+    def __init__(self, pos: F_Vec2, texture: str, b_type: int): 
         self.ec = Ent_Comp(texture, pos)       
-        self.bc = Button_Comp()
+        self.btc = Button_Comp()
+        self.building = Building(b_type)
         
     def draw(self, screen):                
         """this turns the clicked off after its clicked"""            

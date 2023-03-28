@@ -1,4 +1,5 @@
 import pygame
+from copy import copy
 from definitions import *
 from background import BG_Tile
 from building import Build_Comp, Building
@@ -21,7 +22,7 @@ class Mouse:
         self.pos = I_Vec2(0,0)
         self.ent_ID: int = None
         self.ent_type: type = None
-        # self.buiding: Building
+        self.building: Building = None
     
     def update_pos(self)->None:
         self.pos.x, self.pos.y = pygame.mouse.get_pos()
@@ -29,6 +30,7 @@ class Mouse:
     def deselect(self)->None:
         self.ent_ID = None
         self.ent_type = None
+        self.building = None
 
 class Level:
     """Struct to hold all level data and objects """
@@ -71,7 +73,7 @@ class Level:
                     if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH):
                         screen.blit(x.ec.texture, 
                         (x.ec.rect.x - self.cam.offset.x + COL_COUNT*BG_TILE_SIZE, x.ec.rect.y - self.cam.offset.y))
-
+    
             
         for character in self.chars:
             screen.blit(character.ec.texture, (character.ec.rect.x - self.cam.offset.x, 
@@ -80,6 +82,14 @@ class Level:
                         screen.blit(character.ec.texture, 
                         (character.ec.rect.x - self.cam.offset.x + COL_COUNT*BG_TILE_SIZE, character.ec.rect.y - self.cam.offset.y))
         
+        for building in self.buildings:
+            screen.blit(building.ec.texture, ((building.ec.rect.x - self.cam.offset.x), 
+                                                building.ec.rect.y - self.cam.offset.y))
+
+        
+        if self.mouse.building != None:
+            screen.blit(self.mouse.building.ec.texture, ((self.mouse.building.ec.rect.x - self.cam.offset.x), 
+                                                self.mouse.building.ec.rect.y - self.cam.offset.y))
         pygame.draw.rect(screen, (64, 64, 64),pygame.Rect(0,SCREEN_HEIGHT - 100, SCREEN_WIDTH, 100)) #draw white toolbar
         pygame.draw.rect(screen, (128, 128, 180),pygame.Rect(0,SCREEN_HEIGHT - TOOLBAR_HEIGHT, SCREEN_WIDTH, TOOLBAR_HEIGHT)) #draw white toolbar
 
@@ -118,7 +128,12 @@ class Level:
 
 
     def _update_buiding(self, building: Building):
-            level.res = self.buildings[i].bc.update_level_res()
+            self.res = building.bc.update_level_res(self.res)
+
+    def _update_mouse(self):
+        if self.mouse.building != None:
+            self.mouse.update_pos()
+            self.mouse.building.ec.rect.x, self.mouse.building.ec.rect.y = self.mouse.pos.x - self.mouse.pos.x%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE
 
     def _update_camera(self):
         if self.keys_down.right:
@@ -144,8 +159,9 @@ class Level:
 
     def update(self):
         self._update_camera()
+        self._update_mouse()
         for building in self.buildings:
-            self._update_buidings(building)
+            self._update_buiding(building)
         for character in self.chars:
             self._update_char(character)
 
@@ -156,7 +172,9 @@ class Level:
 
         for button in self.button_list:
             if button.ec.rect.collidepoint(self.mouse.pos.tup()):
-                    button.bc.selected = True
+                    button.btc.selected = True
+                    self.mouse.building = button.building
+                    self.mouse.ent_type = type(self.mouse.building)
 
         for ent in self.chars:
             wrap_offset = 0
@@ -175,13 +193,22 @@ class Level:
         self.mouse.update_pos()
 
         for button in self.button_list:
-            button.clicked = False
+            button.btc.selected = False
             
         if self.mouse.ent_type is Character:
             for char in self.chars:
                 if char.ec.ID == self.mouse.ent_ID:
-                    char.cc.aim = self.mouse.pos + self.cam.offset
-                    self.mouse.deselect()
+                    char.cc.aim = I_Vec2(self.mouse.pos.x + self.cam.offset.x, self.mouse.pos.y + self.cam.offset.y)
+        
+        if self.mouse.ent_type is Building:
+            can_place: bool = True
+            for building in self.buildings: #Check no building already on square
+                if building.ec.rect.x == self.mouse.building.ec.rect.x and building.ec.rect.y == self.mouse.building.ec.rect.y:
+                    can_place = False
+            if can_place:
+                self.buildings.append(Building(1, I_Vec2(self.mouse.pos.x - self.mouse.pos.x%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
+
+        self.mouse.deselect()
 
 def level_append(level: Level):
 
@@ -195,17 +222,17 @@ def level_append(level: Level):
     level.add_char("./res/testchar.png", I_Vec2(200, 200))
 
 
-    level.button_list.append(Buttons(I_Vec2(100, 605), "./res/house_button.png"))
+    level.button_list.append(Buttons(I_Vec2(100, 605), "./res/house_button.png", 1))
     
-    level.button_list.append(Buttons(I_Vec2(200, 620), "./res/arrow_left.png"))
+    level.button_list.append(Buttons(I_Vec2(200, 620), "./res/arrow_left.png", 1))
   
-    level.button_list.append(Buttons(I_Vec2(300, 620), "./res/arrow_left.png"))  
+    level.button_list.append(Buttons(I_Vec2(300, 620), "./res/arrow_left.png", 1))  
     
-    level.button_list.append(Buttons(I_Vec2(400, 620), "./res/arrow_left.png"))
+    level.button_list.append(Buttons(I_Vec2(400, 620), "./res/arrow_left.png", 1))
  
-    level.button_list.append(Buttons(I_Vec2(500, 620), "./res/arrow_left.png"))
+    level.button_list.append(Buttons(I_Vec2(500, 620), "./res/arrow_left.png", 1))
       
-    level.button_list.append(Buttons(I_Vec2(600, 620), "./res/arrow_left.png"))
+    level.button_list.append(Buttons(I_Vec2(600, 620), "./res/arrow_left.png", 1))
 
     offset = (SCREEN_WIDTH/len(resources.items()))
 
