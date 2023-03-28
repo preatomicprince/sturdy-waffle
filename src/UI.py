@@ -1,9 +1,10 @@
 from pathlib import Path
 from definitions import *
+from entity import Ent_Comp
 import pygame
 
 class Text:
-    font_path:str = "./res/themponewst.ttf"
+    font_path:str = "./res/themponewst.ttf" #https://www.1001freefonts.com/thempo-new-st.font
     colour = (64, 64, 64)
     size = 25
     def __init__(self, text:str, pos: I_Vec2):
@@ -18,40 +19,18 @@ class Text:
         rect.y = self.pos.y        
         screen.blit(surface, rect)
 
+class Button_Comp:
+    def __init__(self):
+        self.selected: bool = False
 
 class Buttons:
     """ this class creates a button, it collets the width/height of the button, selects its location"""
-    
-    def __init__(self, x, y, image, file, scale):        
-        self.x = x
-        self.y = y
-        self.file = file
-        self.image = pygame.image.load(self.file)
-        """self.image = pygame.transform.scale(image, (int(width * scale)), (int(height * scale))) """
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (x, y)
-        width = self.image.get_width()
-        height = self.image.get_height() #I NEED TO FIGURE OUT HOW TO MAKE THIS SCALE
+    def __init__(self, pos: F_Vec2, texture: str): 
+        self.ec = Ent_Comp(texture, pos)       
+        self.bc = Button_Comp()
         
-        """here we can see if the buttons been clicked"""
-        self.clicked = False
-        
-    def draw(self, screen):    
-        """this gets the mouse possition"""
-        pos = pygame.mouse.get_pos()
-        
-        """this checks if the mouse possition is over a button"""
-        if self.rect.collidepoint(pos):
-            
-            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-                self.clicked = True
-                
-                
-        """this turns the clicked off after its clicked"""
-        if pygame.mouse.get_pressed()[0] == 0:
-            self.clicked = False
-            
-            
-        screen.blit(self.image, (self.x, self.y))    
+    def draw(self, screen):                
+        """this turns the clicked off after its clicked"""            
+        screen.blit(self.ec.texture, (self.ec.rect.x, self.ec.rect.y))    
         
 

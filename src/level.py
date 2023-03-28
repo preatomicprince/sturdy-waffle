@@ -5,7 +5,7 @@ from building import Build_Comp, Building
 from character import Character, Char_Comp
 from pathlib import Path
 from resource import resources
-from entity import Ent_Comp, Interact_Comp
+from entity import Ent_Comp
 from camera import Camera
 from UI import Buttons, Text
 
@@ -154,23 +154,29 @@ class Level:
 
         self.mouse.deselect()
 
+        for button in self.button_list:
+            if button.rect.collidepoint(pos):
+                    button.bc.selected = True
+
         for ent in self.chars:
             wrap_offset = 0
             if ent.ec.rect.x < self.mouse.pos.x + self.cam.offset.x < ent.ec.rect.x + ent.ec.rect.w:
                 if ent.ec.rect.y < self.mouse.pos.y + self.cam.offset.y < ent.ec.rect.y + ent.ec.rect.h:
-                    ent.ic.selected = True
                     self.mouse.ent_ID = ent.ec.ID
                     self.mouse.ent_type = type(ent)
 
             if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH):
                 if ent.ec.rect.x < self.mouse.pos.x + self.cam.offset.x - COL_COUNT*BG_TILE_SIZE< ent.ec.rect.x + ent.ec.rect.w:
                     if ent.ec.rect.y < self.mouse.pos.y + self.cam.offset.y < ent.ec.rect.y + ent.ec.rect.h:
-                        ent.ic.selected = True
                         self.mouse.ent_ID = ent.ec.ID
                         self.mouse.ent_type = type(ent)
 
     def right_click(self):
         self.mouse.update_pos()
+
+        for button in self.button_list:
+            buton.clicked = False
+            
         if self.mouse.ent_type is Character:
             for char in self.chars:
                 if char.ec.ID == self.mouse.ent_ID:
@@ -188,23 +194,18 @@ def level_append(level: Level):
 
     level.add_char("./res/testchar.png", I_Vec2(200, 200))
 
-    house_button = Buttons(100, 605, "button",Path("./res/house_button.png"), 1)
-    level.button_list.append(house_button)
+
+    level.button_list.append(Buttons(I_Vec2(100, 605), "./res/house_button.png"))
     
-    blood_farm_button = Buttons(200, 620, "button",Path("./res/arrow_left.png"), 1)    
-    level.button_list.append(blood_farm_button)
-
-    mine_button = Buttons(300, 620, "button",Path("./res/arrow_left.png"), 1)  
-    level.button_list.append(mine_button)  
-
-    lumber_mill_button = Buttons(400, 620, "button",Path("./res/arrow_left.png"), 1)    
-    level.button_list.append(lumber_mill_button)
-
-    stable_button = Buttons(500, 620, "button",Path("./res/arrow_left.png"), 1)  
-    level.button_list.append(stable_button)
+    level.button_list.append(Buttons(I_Vec2(200, 620), "./res/arrow_left.png"))
+  
+    level.button_list.append(Buttons(I_Vec2(300, 620), "./res/arrow_left.png"))  
+    
+    level.button_list.append(Buttons(I_Vec2(400, 620), "./res/arrow_left.png"))
+ 
+    level.button_list.append(Buttons(I_Vec2(500, 620), "./res/arrow_left.png"))
       
-    lab_button = Buttons(600, 620, "button",Path("./res/arrow_left.png"), 1)  
-    level.button_list.append(lab_button)
+    level.button_list.append(Buttons(I_Vec2(600, 620), "./res/arrow_left.png"))
 
     offset = (SCREEN_WIDTH/len(resources.items()))
 
