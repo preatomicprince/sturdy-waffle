@@ -40,7 +40,7 @@ class Build_Comp:
         return level_res
 
 class Building:
-    def __init__(selfpos: F_Vec2, type: int)->None:
+    def __init__(self, pos: F_Vec2, type: int)->None:
         self.bc = Build_Comp()
 
         if build_type[type] == "House":
