@@ -24,6 +24,10 @@ class I_Vec2:
 
     def __str__(self):
         return f"x:{self.x}, y:{self.y}\n"
+
+    def tup(self)->tuple:
+        """Returns tuple in format (x, y)"""
+        return (self.x, self.y)
 class F_Vec2:
     """2D float vector"""
     def __init__(self, x: float, y: float):

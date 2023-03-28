@@ -155,7 +155,7 @@ class Level:
         self.mouse.deselect()
 
         for button in self.button_list:
-            if button.rect.collidepoint(pos):
+            if button.ec.rect.collidepoint(self.mouse.pos.tup()):
                     button.bc.selected = True
 
         for ent in self.chars:
@@ -169,13 +169,13 @@ class Level:
                 if ent.ec.rect.x < self.mouse.pos.x + self.cam.offset.x - COL_COUNT*BG_TILE_SIZE< ent.ec.rect.x + ent.ec.rect.w:
                     if ent.ec.rect.y < self.mouse.pos.y + self.cam.offset.y < ent.ec.rect.y + ent.ec.rect.h:
                         self.mouse.ent_ID = ent.ec.ID
-                        self.mouse.ent_type = type(ent)
+                        self.mouse.ent_type = type(ent) 
 
     def right_click(self):
         self.mouse.update_pos()
 
         for button in self.button_list:
-            buton.clicked = False
+            button.clicked = False
             
         if self.mouse.ent_type is Character:
             for char in self.chars:
