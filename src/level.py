@@ -23,12 +23,10 @@ class Mouse:
         self.ent_type: type = None
         # self.buiding: Building
     
-    def update_pos(self)->I_Vec2:
+    def update_pos(self)->None:
         self.pos.x, self.pos.y = pygame.mouse.get_pos()
-        return self.pos
 
     def deselect(self)->None:
-        self.selected = False
         self.ent_ID = None
         self.ent_type = None
 
@@ -94,8 +92,21 @@ class Level:
     def _update_char(self, char: Character):
         if char.cc.aim == char.ec.rect:
             char.cc.aim = I_Vec2(-1, -1)
-        if char.cc.aim.x >= 0 or char.cc.aim.x >= 0:
-            if char.cc.aim.x > char.ec.rect.x:
+
+        if char.ec.rect.x >= COL_COUNT*BG_TILE_SIZE:
+            print("going right\n")
+            char.ec.rect.x = 1
+        if char.ec.rect.x < 0:
+            print("goin left\n")
+            char.ec.rect.x = COL_COUNT*BG_TILE_SIZE - 1
+
+        if char.cc.aim.x >= 0 or char.cc.aim.y >= 0:
+            
+            if (char.cc.aim.x > 4000 and char.ec.rect.x < 1000):
+                char.ec.rect.x -= char.cc.vel.x
+            elif char.ec.rect.x > 4000 and char.cc.aim.x < 1000:
+                char.ec.rect.x += char.cc.vel.x
+            elif char.cc.aim.x > char.ec.rect.x:
                 char.ec.rect.x += char.cc.vel.x
             elif char.cc.aim.x < char.ec.rect.x:
                 char.ec.rect.x -= char.cc.vel.x
@@ -105,7 +116,6 @@ class Level:
             elif char.cc.aim.y < char.ec.rect.y:
                 char.ec.rect.y -= char.cc.vel.y
 
-        
 
     def _update_buiding(self, building: Building):
             level.res = self.buildings[i].bc.update_level_res()
@@ -145,19 +155,26 @@ class Level:
         self.mouse.deselect()
 
         for ent in self.chars:
-            if ent.ec.rect.x - self.cam.offset.x < self.mouse.pos.x < ent.ec.rect.x + ent.ec.rect.w - self.cam.offset.x:
-                if ent.ec.rect.y - self.cam.offset.y < self.mouse.pos.y < ent.ec.rect.y + ent.ec.rect.h - self.cam.offset.y:
+            wrap_offset = 0
+            if ent.ec.rect.x < self.mouse.pos.x + self.cam.offset.x < ent.ec.rect.x + ent.ec.rect.w:
+                if ent.ec.rect.y < self.mouse.pos.y + self.cam.offset.y < ent.ec.rect.y + ent.ec.rect.h:
                     ent.ic.selected = True
                     self.mouse.ent_ID = ent.ec.ID
                     self.mouse.ent_type = type(ent)
-                    print("selected")
+
+            if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH):
+                if ent.ec.rect.x < self.mouse.pos.x + self.cam.offset.x - COL_COUNT*BG_TILE_SIZE< ent.ec.rect.x + ent.ec.rect.w:
+                    if ent.ec.rect.y < self.mouse.pos.y + self.cam.offset.y < ent.ec.rect.y + ent.ec.rect.h:
+                        ent.ic.selected = True
+                        self.mouse.ent_ID = ent.ec.ID
+                        self.mouse.ent_type = type(ent)
 
     def right_click(self):
         self.mouse.update_pos()
         if self.mouse.ent_type is Character:
             for char in self.chars:
                 if char.ec.ID == self.mouse.ent_ID:
-                    char.cc.aim = self.mouse.pos
+                    char.cc.aim = self.mouse.pos + self.cam.offset
                     self.mouse.deselect()
 
 def level_append(level: Level):
@@ -167,7 +184,7 @@ def level_append(level: Level):
         for x in range(COL_COUNT):                                                                                           
             level.add_bg_tile("./res/test.png", y)
     
-    level.add_char("./res/testchar.png", I_Vec2(100, 100))
+    level.add_char("./res/testchar.png", I_Vec2(4950, 100))
 
     level.add_char("./res/testchar.png", I_Vec2(200, 200))
 
@@ -195,7 +212,6 @@ def level_append(level: Level):
         if key != "Pop. ":
             level.UI_text.append(Text(f"{key}: {value}", I_Vec2(i*offset + 40, SCREEN_HEIGHT - TOOLBAR_HEIGHT+4)))
         else:
-            print("dd")
             blood_str = "Blood"
             level.UI_text.append(Text(f"{key}: {value}/{resources[blood_str]}", I_Vec2(i*offset + 25, SCREEN_HEIGHT - TOOLBAR_HEIGHT)))
 
