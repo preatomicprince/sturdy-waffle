@@ -14,8 +14,3 @@ class Ent_Comp:
         
         self.ID = Ent_Comp.ent_count
         Ent_Comp.ent_count += 1
-class Interact_Comp:
-    """Interact component. Holds data for entities that player can click on"""
-    def __init__(self)->None:
-        selected: bool = 0
-        mouse_over: bool = 0

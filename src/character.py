@@ -12,5 +12,4 @@ class Char_Comp:
 class Character:
     def __init__(self, texture: str, pos: F_Vec2)->None:
         self.ec = Ent_Comp(texture, pos)
-        self.ic = Interact_Comp()
         self.cc = Char_Comp()
