@@ -34,6 +34,13 @@ class Mouse:
         self.ent_type = None
         self.building = None
 
+class sunlight:
+    def __init__(self):
+        self.rect = pygame.Rect(-2500, 0, (COL_COUNT/2)*BG_TILE_SIZE, ROW_COUNT*BG_TILE_SIZE)
+        self.sl_pos = I_Vec2(self.rect.x, self.rect.y)
+        self.timer = 0
+        self.update_time = 5000
+
 class Level:
     """Struct to hold all level data and objects """
     def __init__(self)->None:
@@ -42,6 +49,7 @@ class Level:
         self.chars:list(Character) = []
         self.res:dict = copy(resources) #count of player resources
         self.res["Wood"] += 100
+        self.sunlight = sunlight()
         self.cam = Camera()
         self.mouse = Mouse()
         self.keys_down = Keys_Down()
@@ -106,7 +114,7 @@ class Level:
 
         if self.mouse.tip.visible:
             pygame.draw.rect(screen, Tooltip.colour, self.mouse.tip.rect)
-
+ 
             for i in self.mouse.tip.texts:
                 Text.colour = (128, 128, 180)
                 for ent in self.button_list:
@@ -115,6 +123,13 @@ class Level:
                                 if ent.building.bc.res_cost[key] > self.res[key]:
                                     Text.colour = (255, 64, 64)
                 i.draw(screen)
+
+        #draw sun. Note 2 calcs for edge cases
+        if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE)/2 - SCREEN_WIDTH:
+            print("dfjjd")
+            pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(self.sunlight.rect.x +5000 , self.sunlight.rect.y, self.sunlight.rect.w, self.sunlight.rect.h))
+        else:
+            pygame.draw.rect(screen, (255, 0, 0), self.sunlight.rect)
 
         
     def _update_char(self, char: Character):
@@ -222,6 +237,21 @@ class Level:
                 blood_str = "Blood"
                 self.UI_text.append(Text(f"{key}: {value}/{self.res[blood_str]}", I_Vec2(i*offset + 25, SCREEN_HEIGHT - TOOLBAR_HEIGHT)))
 
+    def _update_sunlight(self):
+        self.sunlight.timer += (1000/FPS)
+        if self.sunlight.timer >= self.sunlight.update_time:
+            self.sunlight.timer = 0
+            self.sunlight.sl_pos.x += BG_TILE_SIZE
+        self.sunlight.rect.x = self.sunlight.sl_pos.x - self.cam.offset.x
+        if self.sunlight.rect.x >= COL_COUNT*BG_TILE_SIZE:
+            self.sunlight.rect.x = 0
+        for char in self.chars:
+            if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x - self.cam.offset.x, char.ec.rect.y, char.ec.rect.w, char.ec.rect.h)):
+                char.kill()
+        for  ent in chain(self.background, self.buildings):
+            pass
+            #update spritesheet frame
+            #if building: kill workers
     def update(self):
         self._update_camera()
         self._update_mouse()
@@ -230,6 +260,7 @@ class Level:
             self._update_buiding(building)
         for character in self.chars:
             self._update_char(character)
+        self._update_sunlight()
 
     def left_click(self):
         self.mouse.update_pos()
