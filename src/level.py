@@ -145,21 +145,29 @@ class Level:
         if char.ec.rect.x < 0:
             char.ec.rect.x = COL_COUNT*BG_TILE_SIZE - 1
 
-        if char.cc.aim.x >= 0 or char.cc.aim.y >= 0:
-            
+        char.cc.dir = I_Vec2(0, 0)
+        if char.cc.aim.x >= 0 or char.cc.aim.y >= 0:        
             if (char.cc.aim.x > 4000 and char.ec.rect.x < 1000):
                 char.ec.rect.x -= char.cc.vel.x
+                char.cc.dir.x = -1
             elif char.ec.rect.x > 4000 and char.cc.aim.x < 1000:
                 char.ec.rect.x += char.cc.vel.x
+                char.cc.dir.x = 1
             elif char.cc.aim.x > char.ec.rect.x:
                 char.ec.rect.x += char.cc.vel.x
+                char.cc.dir.x = 1
             elif char.cc.aim.x < char.ec.rect.x:
                 char.ec.rect.x -= char.cc.vel.x
+                char.cc.dir.x = -1
 
             if char.cc.aim.y > char.ec.rect.y:
                 char.ec.rect.y += char.cc.vel.y
+                char.cc.dir.y = 1
             elif char.cc.aim.y < char.ec.rect.y:
                 char.ec.rect.y -= char.cc.vel.y
+                char.cc.dir.y = -1
+
+        char.update_state()
 
 
     def _update_buiding(self, building: Building):
@@ -257,6 +265,7 @@ class Level:
                     ent.ec.texture = ent.ec.texture_list[0]
             #update spritesheet frame
             #if building: kill workers
+    
     def update(self):
         self._update_camera()
         self._update_mouse()
@@ -338,12 +347,16 @@ def level_append(level: Level):
     for y in range(ROW_COUNT):
         for x in range(COL_COUNT):                                                                                           
             level.add_bg_tile(random.choice(tile_list), y)
-    
-    level.add_char("./res/testchar.png", I_Vec2(200, 100))
 
-    level.add_char("./res/testchar.png", I_Vec2(200, 200))
-    level.add_char("./res/testchar.png", I_Vec2(300, 200))
-    level.add_char("./res/testchar.png", I_Vec2(300, 300))
+    char_frames = []
+    for i in range(1, 17):
+        char_frames.append(f"./res/char{i}.png")
+    
+    level.add_char(char_frames, I_Vec2(200, 100))
+
+    level.add_char(char_frames, I_Vec2(200, 200))
+    level.add_char(char_frames, I_Vec2(300, 200))
+    level.add_char(char_frames, I_Vec2(300, 300))
 
 
 
