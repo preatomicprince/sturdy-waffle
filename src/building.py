@@ -12,7 +12,7 @@ from entity import Ent_Comp
 from copy import copy
 from resource import resources
 
-building_type = {1:"House", 2:"Blood_Farm", 3:"Mine", 4:"Lumber_Mill", 5:"Stable", 6:"Lab"}
+building_type = {1:"House", 2:"Blood_Farm", 3:"Mine", 4:"Lumber_Mill", 5:"Pyramid", 6:"Lab"}
 class Build_Comp:
     def __init__(self, b_type: int)->None:
         self.res = copy(resources) #how many milliseconds it takes to produce each resource per workers
@@ -62,11 +62,13 @@ class Building:
             texture = "./res/lumber_mill.png"
             self.bc.res["Wood"] = 5
             self.bc.res_cost["Stone"] = 20
+            
 
-        elif building_type[b_type] == "Stable":
+        elif building_type[b_type] == "Pyramid":
             texture = "../res/stable.png"
-            self.bc.res["Horse"] = 30
-
+            self.bc.res_cost["Stone"] = 100
+            self.bc.res_cost["Wood"] = 100
+            
         elif building_type[b_type] == "Lab":
             texture = "../res/lab.png"
 

@@ -292,11 +292,14 @@ class Level:
 
         self.mouse.deselect()
 
-animation_list = []
-animation_steps = 2
 
-tile_list = ["./res/trees_1.png", "./res/grass_1.png"]
+
+
 def level_append(level: Level):
+
+    tile_list = ["./res/trees_1.png", "./res/grass_1.png"]
+    
+    
     for y in range(ROW_COUNT):
         for x in range(COL_COUNT):                                                                                           
             level.add_bg_tile(random.choice(tile_list), y)
