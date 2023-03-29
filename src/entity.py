@@ -14,22 +14,23 @@ class Ent_Comp:
         self.ID = Ent_Comp.ent_count
         Ent_Comp.ent_count += 1
         
-        GREEN = (11, 158, 3) 
+        """GREEN = (11, 158, 3) 
         animation_list = []
         animation_steps = 2
-        spritesheet_image = pygame.image.load("./res/grass_sprite_sheet.png").convert_alpha()
-        sprite_sheet = spritesheet.SpriteSheet(spritesheet_image)
+        spritesheet_image = pygame.image.load().convert_alpha()
+        sprite_sheet = spritesheet.SpriteSheet(spritesheet_image)"""
 
-    for x in range(animation_steps):
-        animation_list.append(Ent_Comp.get_image(x, 100, 100, Ent_Comp.GREEN))
+    
     def get_image(self, frame, width, height, colour):
         image = pygame.Surface((width, height)).convert_alpha()
         image.blit(self.texture, (0, 0), ((frame * width), 0, width, height))
         image.set_colorkey(colour)
         return image
-
-
-
+        
+"""for x in range(animation_steps):
+    animation_list.append(Ent_Comp.get_image(x, 100, 100, Ent_Comp.GREEN))
+grass = Ent_Comp("./res/grass_sprite_sheet.png", )
+"""
 """  
 
 last_update = pygame.time.get_ticks()
