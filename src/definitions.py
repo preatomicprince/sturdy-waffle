@@ -4,7 +4,7 @@ FPS = 60 #Currrently unused. Can be added to clock.tick() in main loop
 TOOLBAR_HEIGHT = 40
 
 BG_TILE_SIZE = 100 #height and width length
-ROW_COUNT = 10
+ROW_COUNT = 6
 COL_COUNT = 50
 
 class I_Vec2:
