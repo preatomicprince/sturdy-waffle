@@ -57,6 +57,7 @@ class Level:
 
     def add_char(self, texture: str, pos: F_Vec2):
         self.chars.append(Character(texture, pos))
+        self.res["Pop. "] += 1
 
     def draw(self, screen: pygame.display)->None:
         """Draw all entities:
@@ -123,6 +124,7 @@ class Level:
                     if len(building.bc.workers) < building.bc.worker_cap:
                         building.bc.add_worker(char.ec.ID)
                         char.ec.visible = False
+                        break
             char.cc.aim = I_Vec2(-1, -1)
 
         if char.ec.rect.x >= COL_COUNT*BG_TILE_SIZE:
