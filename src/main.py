@@ -3,9 +3,14 @@ from pathlib import Path
 import sys
 from definitions import *
 from level import Level, level_append
-from UI import Buttons, Text
+from UI import Buttons, Text, Bar, bar
 from resource import resources
 from event import events
+
+
+
+
+
 
 def main()->None:
     """
@@ -46,7 +51,7 @@ def main()->None:
         events(level)
         level.update()
         level.draw(screen)
-
+        bar.drawing(screen)
         pygame.display.update()
         print(clock.get_fps())
         clock.tick(FPS) #Added FPS argument to limit framerate

@@ -1,4 +1,5 @@
 import pygame
+import random
 from itertools import chain
 from copy import copy
 from definitions import *
@@ -321,7 +322,10 @@ class Level:
                             break
 
         self.mouse.deselect()
-import random
+
+animation_list = []
+animation_steps = 2
+
 tile_list = ["./res/trees_1.png", "./res/grass_1.png"]
 def level_append(level: Level):
     for y in range(ROW_COUNT):
