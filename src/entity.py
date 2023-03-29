@@ -4,6 +4,7 @@ from definitions import F_Vec2
 
 class Ent_Comp:
     ent_count: int = 0
+    colour = (11, 158, 3)
     """Component containing variables found in all entities"""
     def __init__(self, texture: str, pos: F_Vec2)->None:
         self.texture_list = []
@@ -11,8 +12,13 @@ class Ent_Comp:
             self.texture = pygame.image.load(Path(texture))
         else:
             for i in texture:
-                self.texture_list.append(pygame.image.load(Path(i)))
+                image = pygame.image.load(Path(i))
+                image.convert_alpha()
+                image.set_colorkey(Ent_Comp.colour)
+                self.texture_list.append(image)
                 self.texture = self.texture_list[0]
+
+
         self.rect = self.texture.get_rect()
         self.rect.x = pos.x
         self.rect.y = pos.y
