@@ -108,6 +108,11 @@ class Level:
 
             for i in self.mouse.tip.texts:
                 Text.colour = (128, 128, 180)
+                for ent in self.button_list:
+                    if ent.ec.rect.collidepoint(self.mouse.pos.tup()):
+                        for key, value in ent.building.bc.res_cost.items():
+                                if ent.building.bc.res_cost[key] > self.res[key]:
+                                    Text.colour = (255, 64, 64)
                 i.draw(screen)
 
         
@@ -299,11 +304,11 @@ def level_append(level: Level):
 
     level.button_list.append(Buttons(I_Vec2(100, 605), "./res/house_button.png", 1))
     
-    level.button_list.append(Buttons(I_Vec2(200, 620), "./res/arrow_left.png", 1))
+    level.button_list.append(Buttons(I_Vec2(200, 605), "./res/arrow_left.png", 1))
   
-    level.button_list.append(Buttons(I_Vec2(300, 620), "./res/arrow_left.png", 1))  
+    level.button_list.append(Buttons(I_Vec2(300, 605), "./res/mine_button.png", 3))  
     
-    level.button_list.append(Buttons(I_Vec2(400, 620), "./res/arrow_left.png", 1))
+    level.button_list.append(Buttons(I_Vec2(400, 605), "./res/lumber_mill_button.png", 4))
  
     level.button_list.append(Buttons(I_Vec2(500, 620), "./res/arrow_left.png", 1))
       
