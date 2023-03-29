@@ -167,13 +167,20 @@ class Level:
                         if ent.bc.res[key] != 0:
                             self.mouse.tip.rect.h += 40
                             timer = int(100*ent.bc.res_time[key]/ent.bc.res[key])
-                            self.mouse.tip.texts.append(Text(f"{key}+1: {timer}%",
+                            self.mouse.tip.texts.append(Text(f"{key.strip()}+1: {timer}%",
                                 I_Vec2(self.mouse.tip.rect.x + 10, self.mouse.tip.rect.y + 80)))
                     
                 elif type(ent) == Buttons:
                     self.mouse.tip.texts = []
                     self.mouse.tip.rect.w = 180
                     self.mouse.tip.rect.h = 80
+                    self.mouse.tip.texts.append(Text(building_type[ent.building.bc.b_type], 
+                                                I_Vec2(self.mouse.tip.rect.x + 10, self.mouse.tip.rect.y)))
+                    for key, value in ent.building.bc.res_cost.items():
+                        if ent.building.bc.res_cost[key] != 0:
+                            self.mouse.tip.texts.append(Text(f"cost: {value} {key}", 
+                                                        I_Vec2(self.mouse.tip.rect.x + 10, self.mouse.tip.rect.y + 40)))
+                            
                 break
 
     def _update_camera(self):
