@@ -13,3 +13,6 @@ class Character:
     def __init__(self, texture: str, pos: F_Vec2)->None:
         self.ec = Ent_Comp(texture, pos)
         self.cc = Char_Comp()
+
+    def kill(self):
+        print("Ded")

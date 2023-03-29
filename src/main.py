@@ -53,7 +53,7 @@ def main()->None:
         level.draw(screen)
         bar.drawing(screen)
         pygame.display.update()
-        #print(clock.get_fps())
+        print(clock.get_fps())
         clock.tick(FPS) #Added FPS argument to limit framerate
 
     #END GAME LOOP
