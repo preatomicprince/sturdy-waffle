@@ -43,3 +43,14 @@ class Tooltip:
         self.visible = False 
         
 
+class Bar:
+    def __init__(self):
+        self.sacrifice_progress = 1
+        self.sacrifice_bar = 60
+        self.sacrifice_bar_lengh = self.sacrifice_bar * self.sacrifice_progress
+        self.RED = (255, 0, 0)
+    def drawing(self, screen):
+        self.sacrifice_bar_lengh = self.sacrifice_bar * self.sacrifice_progress
+        pygame.draw.rect(screen, self.RED, pygame.Rect(30, 10, self.sacrifice_bar_lengh, 60))
+
+bar = Bar()
