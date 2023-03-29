@@ -6,12 +6,13 @@ class Ent_Comp:
     ent_count: int = 0
     """Component containing variables found in all entities"""
     def __init__(self, texture: str, pos: F_Vec2)->None:
-        texture_list = []
+        self.texture_list = []
         if type(texture) == str:
             self.texture = pygame.image.load(Path(texture))
         else:
             for i in texture:
                 self.texture_list.append(pygame.image.load(Path(i)))
+                self.texture = self.texture_list[0]
         self.rect = self.texture.get_rect()
         self.rect.x = pos.x
         self.rect.y = pos.y

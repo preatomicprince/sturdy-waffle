@@ -37,7 +37,7 @@ class Mouse:
 
 class sunlight:
     def __init__(self):
-        self.rect = pygame.Rect(-2500, 0, (COL_COUNT/2)*BG_TILE_SIZE, ROW_COUNT*BG_TILE_SIZE)
+        self.rect = pygame.Rect(2500, 0, (COL_COUNT/2)*BG_TILE_SIZE, ROW_COUNT*BG_TILE_SIZE)
         self.sl_pos = I_Vec2(self.rect.x, self.rect.y)
         self.timer = 0
         self.update_time = 5000
@@ -128,9 +128,6 @@ class Level:
         #draw sun. Note 2 calcs for edge cases
         if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE)/2 - SCREEN_WIDTH:
             print("dfjjd")
-            pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(self.sunlight.rect.x +5000 , self.sunlight.rect.y, self.sunlight.rect.w, self.sunlight.rect.h))
-        else:
-            pygame.draw.rect(screen, (255, 0, 0), self.sunlight.rect)
 
         
     def _update_char(self, char: Character):
@@ -243,14 +240,21 @@ class Level:
         if self.sunlight.timer >= self.sunlight.update_time:
             self.sunlight.timer = 0
             self.sunlight.sl_pos.x += BG_TILE_SIZE
-        self.sunlight.rect.x = self.sunlight.sl_pos.x - self.cam.offset.x
+        self.sunlight.rect.x = self.sunlight.sl_pos.x
         if self.sunlight.rect.x >= COL_COUNT*BG_TILE_SIZE:
             self.sunlight.rect.x = 0
         for char in self.chars:
-            if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x - self.cam.offset.x, char.ec.rect.y, char.ec.rect.w, char.ec.rect.h)):
+            if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x, char.ec.rect.y, char.ec.rect.w, char.ec.rect.h)):
                 char.kill()
-        for  ent in chain(self.background, self.buildings):
-            pass
+        
+        for y in range(len(self.background)): #draw tiles
+            for ent in self.background[y]:
+                if self.sunlight.rect.x < ent.ec.rect.x < self.sunlight.rect.x + self.sunlight.rect.w:
+                    ent.ec.texture = ent.ec.texture_list[1]
+                elif self.sunlight.rect.x < ent.ec.rect.x + 5000 < self.sunlight.rect.x + self.sunlight.rect.w:
+                    ent.ec.texture = ent.ec.texture_list[1]
+                else:
+                    ent.ec.texture = ent.ec.texture_list[0]
             #update spritesheet frame
             #if building: kill workers
     def update(self):
@@ -328,7 +332,7 @@ class Level:
 
 def level_append(level: Level):
 
-    tile_list = ["./res/trees_1.png", "./res/grass_1.png"]
+    tile_list = [["./res/trees_1.png", "./res/tree2.png"],[ "./res/grass_1.png", "./res/grass2.png"]]
     
     
     for y in range(ROW_COUNT):
