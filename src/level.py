@@ -274,7 +274,7 @@ class Level:
             if can_place:
                 for key, value in resources.items():
                     self.res[key] -= button.building.bc.res_cost[key]
-                self.buildings.append(Building(1, I_Vec2(self.mouse.pos.x - self.mouse.pos.x%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
+                self.buildings.append(Building(3, I_Vec2(self.mouse.pos.x - self.mouse.pos.x%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
 
         for building in self.buildings:
             if len(building.bc.workers) > 0 and self.mouse.ent_ID == None:
@@ -288,11 +288,12 @@ class Level:
                             break
 
         self.mouse.deselect()
-
+import random
+tile_list = ["./res/trees_1.png", "./res/grass_1.png"]
 def level_append(level: Level):
     for y in range(ROW_COUNT):
         for x in range(COL_COUNT):                                                                                           
-            level.add_bg_tile("./res/test.png", y)
+            level.add_bg_tile(random.choice(tile_list), y)
     
     level.add_char("./res/testchar.png", I_Vec2(200, 100))
 
@@ -304,7 +305,7 @@ def level_append(level: Level):
 
     level.button_list.append(Buttons(I_Vec2(100, 605), "./res/house_button.png", 1))
     
-    level.button_list.append(Buttons(I_Vec2(200, 605), "./res/arrow_left.png", 1))
+    level.button_list.append(Buttons(I_Vec2(200, 605), "./res/blood_button.png", 1))
   
     level.button_list.append(Buttons(I_Vec2(300, 605), "./res/mine_button.png", 3))  
     

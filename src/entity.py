@@ -13,3 +13,6 @@ class Ent_Comp:
         self.visible: bool = True
         self.ID = Ent_Comp.ent_count
         Ent_Comp.ent_count += 1
+        
+    def spritesheet(self):
+        pass
