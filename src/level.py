@@ -41,6 +41,7 @@ class Level:
         self.buildings:list(Building) = []
         self.chars:list(Character) = []
         self.res:dict = copy(resources) #count of player resources
+        self.res["Wood"] += 100
         self.cam = Camera()
         self.mouse = Mouse()
         self.keys_down = Keys_Down()
@@ -222,10 +223,12 @@ class Level:
         self.mouse.deselect()
 
         for button in self.button_list:
-            if button.ec.rect.collidepoint(self.mouse.pos.tup()):
-                    button.btc.selected = True
-                    self.mouse.building = button.building
-                    self.mouse.ent_type = type(self.mouse.building)
+            for key, value in resources.items():
+                if self.res[key] >= button.building.bc.res_cost[key]: 
+                    if button.ec.rect.collidepoint(self.mouse.pos.tup()):
+                            button.btc.selected = True
+                            self.mouse.building = button.building
+                            self.mouse.ent_type = type(self.mouse.building)
 
         for ent in self.chars:
             wrap_offset = 0
@@ -257,6 +260,8 @@ class Level:
                 if building.ec.rect.x == self.mouse.building.ec.rect.x and building.ec.rect.y == self.mouse.building.ec.rect.y:
                     can_place = False
             if can_place:
+                for key, value in resources.items():
+                    self.res[key] -= button.building.bc.res_cost[key]
                 self.buildings.append(Building(1, I_Vec2(self.mouse.pos.x - self.mouse.pos.x%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
 
         for building in self.buildings:

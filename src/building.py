@@ -17,6 +17,7 @@ class Build_Comp:
     def __init__(self, b_type: int)->None:
         self.res = copy(resources) #how many milliseconds it takes to produce each resource per workers
         self.res_time = copy(resources)
+        self.res_cost = copy(resources)
         self.b_type = b_type
         self.workers: list(Ent_Comp.ID) = []
         self.worker_cap = 3 #limit to number of workers 
@@ -46,6 +47,7 @@ class Building:
         if building_type[b_type] == "House":
             texture = "./res/house.png"
             self.bc.res["Pop. "] = 10000
+            self.bc.res_cost["Wood"] = 10
 
         elif building_type[b_type] == "Blood_Farm":
             texture = "../res/bloodfarm.png"
