@@ -56,7 +56,6 @@ class Building:
         elif building_type[b_type] == "Mine":
             texture = "./res/mine.png"
             self.bc.res["Stone"] = 5000
-            self.bc.res["Coal"] = 15000
             self.bc.res_cost["Wood"] = 15 
 
         elif building_type[b_type] == "Lumber_Mill":
