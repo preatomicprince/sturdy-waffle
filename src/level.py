@@ -271,7 +271,7 @@ class Level:
             for i in b.bc.workers:
                 worker_ID = b.bc.rm_worker()
                 for char in self.chars:
-                    if char.ec.ent_ID == worker_ID:
+                    if char.ec.ID == worker_ID:
                         char.cc.killed = True
     
     def update(self):
