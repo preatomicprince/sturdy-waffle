@@ -40,7 +40,7 @@ class sunlight:
         self.rect = pygame.Rect(2500, 0, (COL_COUNT/2)*BG_TILE_SIZE, ROW_COUNT*BG_TILE_SIZE)
         self.sl_pos = I_Vec2(self.rect.x, self.rect.y)
         self.timer = 0
-        self.update_time = 5000
+        self.update_time = 50000
 
 class Level:
     """Struct to hold all level data and objects """
@@ -103,6 +103,7 @@ class Level:
         if self.mouse.building != None:
             screen.blit(self.mouse.building.ec.texture, ((self.mouse.building.ec.rect.x - self.cam.offset.x), 
                                                 self.mouse.building.ec.rect.y - self.cam.offset.y))
+
         pygame.draw.rect(screen, (64, 64, 64),pygame.Rect(0,SCREEN_HEIGHT - 100, SCREEN_WIDTH, 100)) #draw white toolbar
         pygame.draw.rect(screen, (128, 128, 180),pygame.Rect(0,SCREEN_HEIGHT - TOOLBAR_HEIGHT, SCREEN_WIDTH, TOOLBAR_HEIGHT)) #draw white toolbar
 
@@ -124,6 +125,8 @@ class Level:
                                 if ent.building.bc.res_cost[key] > self.res[key]:
                                     Text.colour = (255, 64, 64)
                 i.draw(screen)
+        prog_bar_w = (len(self.buildings[0].bc.workers)/self.buildings[0].bc.worker_cap)*SCREEN_WIDTH - 20
+        pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(30, 10, prog_bar_w, 60))
         
     def _update_char(self, char: Character):
         if char.cc.aim == char.ec.rect:
@@ -138,7 +141,7 @@ class Level:
         
 
         char.cc.dir = I_Vec2(0, 0)
-        if char.cc.aim.x >= 0 or char.cc.aim.y >= 0 and not char.cc.killed:        
+        if char.cc.aim.x >= 0 or char.cc.aim.y >= 0 and char.cc.killed == False:        
             if (char.cc.aim.x > 4000 and char.ec.rect.x < 1000):
                 char.ec.rect.x -= char.cc.vel.x
                 char.cc.dir.x = -1
@@ -169,6 +172,7 @@ class Level:
 
     def _update_buiding(self, building: Building):
         self.res = building.bc.update_level_res(self.res)
+
         
 
     def _update_mouse(self):
@@ -267,12 +271,20 @@ class Level:
                 else:
                     ent.ec.texture = ent.ec.texture_list[0]
 
-        for b in self.buildings:
-            for i in b.bc.workers:
-                worker_ID = b.bc.rm_worker()
-                for char in self.chars:
-                    if char.ec.ID == worker_ID:
-                        char.cc.killed = True
+        for ent in self.buildings:
+            if self.sunlight.rect.x < ent.ec.rect.x < self.sunlight.rect.x + self.sunlight.rect.w:
+                for i in b.bc.workers:
+                    worker_ID = b.bc.rm_worker()
+                    for char in self.chars:
+                        if char.ec.ID == worker_ID:
+                            char.cc.killed = True
+            elif self.sunlight.rect.x < ent.ec.rect.x + 5000 < self.sunlight.rect.x + self.sunlight.rect.w:
+                for i in b.bc.workers:
+                    worker_ID = b.bc.rm_worker()
+                    for char in self.chars:
+                        if char.ec.ID == worker_ID:
+                            char.cc.killed = True
+            
     
     def update(self):
         self._update_camera()
@@ -280,6 +292,7 @@ class Level:
         self._update_text()
         for building in self.buildings:
             self._update_buiding(building)
+            print(f"building{building.bc.b_type} workers {len(building.bc.workers)}")
         for character in self.chars:
             self._update_char(character)
         self._update_sunlight()
@@ -381,6 +394,8 @@ def level_append(level: Level):
     level.button_list.append(Buttons(I_Vec2(500, 605), "./res/pyramid_button.png", 5))
       
     level.button_list.append(Buttons(I_Vec2(600, 620), "./res/arrow_left.png", 1))
+
+    level.buildings.append(Building(5, I_Vec2(500, 500)))
 
     offset = (SCREEN_WIDTH/len(resources.items()))
 
