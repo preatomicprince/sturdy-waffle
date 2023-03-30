@@ -16,7 +16,10 @@ class Char_Comp:
 
 class Character:
     def __init__(self, texture: str, pos: F_Vec2)->None:
-        self.ec = Ent_Comp(texture, pos)
+        char_frames = []
+        for i in range(1, 17):
+            char_frames.append(f"./res/char{i}.png")
+        self.ec = Ent_Comp(char_frames, pos)
         self.cc = Char_Comp()
 
     def update_frame(self):

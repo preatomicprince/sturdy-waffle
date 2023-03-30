@@ -172,7 +172,7 @@ class Level:
 
 
     def _update_buiding(self, building: Building):
-        self.res = building.bc.update_level_res(self.res)
+        self.res, self.chars = building.update_level_res(self.res, self.chars)
 
         
 
@@ -242,8 +242,12 @@ class Level:
             if key != "Pop. ":
                 self.UI_text.append(Text(f"{key}: {value}", I_Vec2(i*offset + 40, SCREEN_HEIGHT - TOOLBAR_HEIGHT+4)))
             else:
+                pop_num = 0
+                for j in self.chars:
+                    if j.cc.killed == False:
+                        pop_num += 1
                 blood_str = "Blood"
-                self.UI_text.append(Text(f"{key}: {value}/{self.res[blood_str]}", I_Vec2(i*offset + 25, SCREEN_HEIGHT - TOOLBAR_HEIGHT)))
+                self.UI_text.append(Text(f"{key}: {pop_num}/{self.res[blood_str]}", I_Vec2(i*offset + 25, SCREEN_HEIGHT - TOOLBAR_HEIGHT)))
 
     def _update_sunlight(self):
         self.sunlight.timer += (1000/FPS)
@@ -280,8 +284,8 @@ class Level:
                         if char.ec.ID == worker_ID:
                             char.cc.killed = True
             elif self.sunlight.rect.x < ent.ec.rect.x + 5000 < self.sunlight.rect.x + self.sunlight.rect.w:
-                for i in b.bc.workers:
-                    worker_ID = b.bc.rm_worker()
+                for i in ent.bc.workers:
+                    worker_ID = ent.bc.rm_worker()
                     for char in self.chars:
                         if char.ec.ID == worker_ID:
                             char.cc.killed = True
