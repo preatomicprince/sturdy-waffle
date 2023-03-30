@@ -23,11 +23,9 @@ class Build_Comp:
         self.workers: list(Ent_Comp.ID) = []
         self.worker_cap = 3 #limit to number of workers 
 
-    def add_worker(self, ec_ID: int)->int:
+    def add_worker(self, ec_ID: int)->None:
         if len(self.workers) < self.worker_cap:
-            self.workers.append(ec_ID)
-            return 1
-        return 0
+            self.workers.append(int(ec_ID))
 
     def rm_worker(self)->int:
         return self.workers.pop()
@@ -75,7 +73,6 @@ class Building:
             texture = "./res/pyramid.png"
             self.bc.res_cost["Wood"] = 1
             self.bc.worker_cap = 10
-            self.bc.update_score()
             
         elif building_type[b_type] == "Lab":
             texture = "../res/lab.png"
