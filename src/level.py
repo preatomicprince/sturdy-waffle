@@ -125,11 +125,6 @@ class Level:
                                 if ent.building.bc.res_cost[key] > self.res[key]:
                                     Text.colour = (255, 64, 64)
                 i.draw(screen)
-
-        #draw sun. Note 2 calcs for edge cases
-        if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE)/2 - SCREEN_WIDTH:
-            print("dfjjd")
-
         
     def _update_char(self, char: Character):
         if char.cc.aim == char.ec.rect:
@@ -252,8 +247,12 @@ class Level:
             self.sunlight.timer = 0
             self.sunlight.sl_pos.x += BG_TILE_SIZE
         self.sunlight.rect.x = self.sunlight.sl_pos.x
+
         if self.sunlight.rect.x >= COL_COUNT*BG_TILE_SIZE:
             self.sunlight.rect.x = 0
+            self.sunlight.sl_pos.x = 0
+
+
         for char in self.chars:
             if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x + 50, char.ec.rect.y, char.ec.rect.w, char.ec.rect.h)):
                 char.cc.killed = True
@@ -268,8 +267,13 @@ class Level:
                     ent.ec.texture = ent.ec.texture_list[1]
                 else:
                     ent.ec.texture = ent.ec.texture_list[0]
-            #update spritesheet frame
-            #if building: kill workers
+
+        for b in self.buildings:
+            for i in b.bc.workers:
+                worker_ID = b.bc.rm_worker()
+                for char in self.chars:
+                    if char.ec.ID == worker_ID:
+                        char.cc.killed = True
     
     def update(self):
         self._update_camera()
@@ -318,7 +322,6 @@ class Level:
                 if char.ec.ID == self.mouse.ent_ID:
                     char.cc.aim = I_Vec2(self.mouse.pos.x + self.cam.offset.x, self.mouse.pos.y + self.cam.offset.y)
                 if char.cc.state == "killed":
-                    print("ggggggggggggg")
                     char.ec.aim = I_Vec2(char.ec.rect.x, char.ec.rect.y)
         
         if self.mouse.ent_type is Building:
