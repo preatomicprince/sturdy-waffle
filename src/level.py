@@ -328,7 +328,7 @@ class Level:
             if can_place:
                 for key, value in resources.items():
                     self.res[key] -= button.building.bc.res_cost[key]
-                self.buildings.append(Building(5, I_Vec2(self.mouse.pos.x - self.mouse.pos.x%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
+                self.buildings.append(Building(self.mouse.building.bc.b_type, I_Vec2(self.mouse.pos.x - self.mouse.pos.x%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
 
         for building in self.buildings:
             if len(building.bc.workers) > 0 and self.mouse.ent_ID == None:
