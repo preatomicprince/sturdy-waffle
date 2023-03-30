@@ -18,9 +18,6 @@ class Character:
     def __init__(self, texture: str, pos: F_Vec2)->None:
         self.ec = Ent_Comp(texture, pos)
         self.cc = Char_Comp()
-        
-    def kill(self):
-        print("Ded")
 
     def update_frame(self):
         if self.cc.frame_count >= len(self.cc.frames) - 1:
@@ -28,7 +25,6 @@ class Character:
                 self.cc.frame_count = 0
         else:
             self.cc.frame_count += 1
-        print(f"{self.cc.state} {self.cc.frame_count} {self.cc.frames[self.cc.frame_count-1]}")
         self.ec.texture = self.ec.texture_list[self.cc.frames[self.cc.frame_count]]
 
 
