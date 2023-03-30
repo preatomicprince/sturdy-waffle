@@ -29,10 +29,14 @@ def main()->None:
     quit and exit
     """
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    
     clock = pygame.time.Clock()
     level = Level()
+    
     running = True
     state = False
+    game = True
+    
     level_append(level)
     
     """
@@ -45,20 +49,30 @@ def main()->None:
     *////////////////////////*
     """
     pygame.init()
+    pygame.display.set_caption("In the Dark")
     track.play_music()
     #BEGIN GAME LOOP
     while running:
-        
-        if state == True:
+        """this will be the menu"""
+        if state == True and game == True:
             pass
         
         
-        elif state == False:
+        if state == False and game == True:
             events(level)
             level.update()
             level.draw(screen)
             
             bar.drawing(screen)
+        
+        """this is if you win the level"""
+        if state == False and game == False:
+            pass
+        
+        """this is if you lose the game. it will need a quit option and a restart button"""
+        if state == True and game == True:
+            pass
+        
         pygame.display.update()
         #print(clock.get_fps())
         clock.tick() #Added FPS argument to limit framerate

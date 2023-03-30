@@ -397,4 +397,5 @@ def level_append(level: Level):
 
         
 
-
+def lose_screen():
+    screen.fill((0, 0, 0))
