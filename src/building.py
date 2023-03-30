@@ -77,8 +77,12 @@ class Building:
         for (key, value) in self.bc.res_time.items():
             self.bc.res_time[key] += (1000/FPS)*len(self.bc.workers)
             if self.bc.res[key] <= self.bc.res_time[key] and self.bc.res[key] > 0:
+                if key == "Blood":
+                    if level_res["pop. "] >= level_res["Blood"]:
+                        continue
+                    level_chars.append(Character(None, I_Vec2(self.ec.rect.x - 100, self.ec.rect.y)))
+                    
                 level_res[key] += 1
-                level_chars.append(Character(None, I_Vec2(self.ec.rect.x - 100, self.ec.rect.y)))
                 self.bc.res_time[key] = 0
         
         return level_res, level_chars

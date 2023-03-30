@@ -3,7 +3,7 @@ from definitions import *
 from entity import Ent_Comp
 
 class Char_Comp:
-    speed = 1
+    speed = 2
     def __init__(self):
         self.dir = I_Vec2(0, 0)
         self.vel = I_Vec2(Char_Comp.speed, Char_Comp.speed)
