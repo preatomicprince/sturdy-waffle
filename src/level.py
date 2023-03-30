@@ -131,11 +131,17 @@ class Level:
                                     Text.colour = (255, 64, 64)
                 i.draw(screen)
         prog_bar_w = (len(self.buildings[0].bc.workers)/self.buildings[0].bc.worker_cap)*SCREEN_WIDTH - 20
-        pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(30, 10, prog_bar_w, 60))
+        
+
+        
         
         
         if len(self.buildings[0].bc.workers) <= self.buildings[0].bc.worker_cap:
             game = False
+
+
+        pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(10, 10, prog_bar_w, 60))
+    
 
        
     def _update_buiding(self, building: Building):

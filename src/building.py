@@ -75,13 +75,18 @@ class Building:
 
     def update_level_res(self, level_res: resources, level_chars)-> resources:
         for (key, value) in self.bc.res_time.items():
+            if key == "Pop. " and level_res["Pop. "] >= level_res["Blood"]:
+                self.bc.res_time[key] = 0
             self.bc.res_time[key] += (1000/FPS)*len(self.bc.workers)
             if self.bc.res[key] <= self.bc.res_time[key] and self.bc.res[key] > 0:
-                if key == "Blood":
-                    if level_res["Pop. "] >= level_res["Blood"]:
+                if key == "Pop. ":
+                    if level_res["Pop. "] < level_res["Blood"]:
+                        print("hoh")
+                        level_res[key] += 1
+                        self.bc.res_time[key] = 0
+                        level_chars.append(Character(None, I_Vec2(self.ec.rect.x - 100, self.ec.rect.y)))
                         continue
-                    level_chars.append(Character(None, I_Vec2(self.ec.rect.x - 100, self.ec.rect.y)))
-
+                   
                 level_res[key] += 1
                 self.bc.res_time[key] = 0
         
