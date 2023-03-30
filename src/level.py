@@ -198,9 +198,16 @@ class Level:
             self.mouse.building.ec.rect.x, self.mouse.building.ec.rect.y = self.mouse.pos.x - self.mouse.pos.x%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE
         self.mouse.tip.visible = False
         for ent in chain(self.buildings, self.button_list):
-            if ent.ec.rect.collidepoint(self.mouse.pos.tup()):
-                self.mouse.tip.visible = True
+            collide = None
+            print(type(ent))
+            if type(ent) == Building:
+                collide = ent.ec.rect.collidepoint(self.mouse.pos.x + self.cam.offset.x, self.mouse.pos.y + self.cam.offset.y )
+                self.mouse.tip.rect.x, self.mouse.tip.rect.y = ent.ec.rect.x + ent.ec.rect.w - self.cam.offset.x, ent.ec.rect.y - self.cam.offset.y + 25
+            elif type(ent) == Buttons:
+                collide = ent.ec.rect.collidepoint(self.mouse.pos.tup())
                 self.mouse.tip.rect.x, self.mouse.tip.rect.y = ent.ec.rect.x + ent.ec.rect.w, ent.ec.rect.y
+            if collide:
+                self.mouse.tip.visible = True
                 if type(ent) == Building:
                     self.mouse.tip.texts = []
                     self.mouse.tip.rect.w = 180
