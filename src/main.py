@@ -49,10 +49,6 @@ def main()->None:
     #BEGIN GAME LOOP
     while running:
         
-<<<<<<< HEAD
-        events(level)
-        level.update()
-        level.draw(screen)
 =======
         if state == True:
             pass
