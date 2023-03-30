@@ -10,6 +10,7 @@ from music import *
 
 
 
+
 track.loading()
 
 
@@ -55,26 +56,26 @@ def main()->None:
     while running:
 
         """this will be the menu"""
-        if state == True and game == True:
+        if level.state == True and level.game == True:
             pass
 
         
         
-        if state == False and game == True:
+        if level.state == False and level.game == True:
             events(level)
             level.update()
             level.draw(screen)
             
             
         """this is if you win the level"""
-        if state == False and game == False:
+        if level.state == False and level.game == False:
             events(level)
             end_text = Text("You win", I_Vec2(100, 100))
             screen.fill((0, 0, 0))
             end_text.draw(screen)
         
         """this is if you lose the game. it will need a quit option and a restart button"""
-        if state == True and game == True:
+        if level.state == True and level.game == True:
             events(level)
             end_text = Text("You lose", I_Vec2(100, 100))
             screen.fill((0, 0, 0))

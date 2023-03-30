@@ -58,6 +58,8 @@ class Level:
         self.button_list = []
         self.UI_text = []
         self.bar_list = []
+        self.state = False
+        self.game = True
     def add_bg_tile(self, texture: str,  y_pos: float, coal: int = 0, stone: int = 0, wood: int = 0)->None:
         """Adds tiles to background list, in the specified y_pos. 
         AUtomatically fills next blank square in X direction"""
@@ -130,10 +132,15 @@ class Level:
                 i.draw(screen)
         prog_bar_w = (len(self.buildings[0].bc.workers)/self.buildings[0].bc.worker_cap)*SCREEN_WIDTH - 20
         pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(30, 10, prog_bar_w, 60))
-    
+        
+        
+        if len(self.buildings[0].bc.workers) <= self.buildings[0].bc.worker_cap:
+            game = False
+
        
     def _update_buiding(self, building: Building):
-        self.res, self.chars = building.update_level_res(self.res, self.chars)        
+        self.res, self.chars = building.update_level_res(self.res, self.chars)  
+        
     def _update_char(self, char: Character):
         if char.cc.aim == char.ec.rect:
             for building in self.buildings:
@@ -175,8 +182,7 @@ class Level:
 
         char.update_state()
 
-
-
+    
 
         
 
