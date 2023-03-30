@@ -7,6 +7,9 @@ stone: Used to build roads and perhaps some buidlings
 """
 
 resources = {"Blood":0, "Coal":0, "Stone":0, "Wood":0, "Pop. ":0}
+"""this is the number that determins how many people have been sacrificed in a temple"""
+class Win_State:
+    
+    sp = 1 
 
-
-
+winning = Win_State()

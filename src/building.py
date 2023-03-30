@@ -10,7 +10,8 @@ import pygame
 from definitions import *
 from entity import Ent_Comp
 from copy import copy
-from resource import resources
+from resource import resources, Win_State, winning
+
 
 building_type = {1:"House", 2:"Blood_Farm", 3:"Mine", 4:"Lumber_Mill", 5:"Pyramid", 6:"Lab"}
 class Build_Comp:
@@ -30,16 +31,20 @@ class Build_Comp:
 
     def rm_worker(self)->int:
         return self.workers.pop()
-
+        
+    def update_score(self):
+        winning.sp + len(self.workers)
+        
     def update_level_res(self, level_res: resources)-> resources:
         for (key, value) in self.res_time.items():
             self.res_time[key] += (1000/FPS)*len(self.workers)
             if self.res[key] <= self.res_time[key] and self.res[key] > 0:
                 level_res[key] += 1
                 self.res_time[key] = 0
-
+        
         return level_res
 
+    
 class Building:
     def __init__(self, b_type: int, pos: I_Vec2 = I_Vec2(-1, -1))->None:
         self.bc = Build_Comp(b_type)
@@ -50,24 +55,27 @@ class Building:
             self.bc.res_cost["Wood"] = 10
 
         elif building_type[b_type] == "Blood_Farm":
-            texture = "../res/house.png"
+            texture = "./res/blood.png"
             self.bc.res["Blood"] = 5000 
-
+            self.bc.res_cost["Wood"] = 15
+            
         elif building_type[b_type] == "Mine":
             texture = "./res/mine.png"
             self.bc.res["Stone"] = 5000
             self.bc.res_cost["Wood"] = 15 
+             
 
         elif building_type[b_type] == "Lumber_Mill":
             texture = "./res/lumber_mill.png"
             self.bc.res["Wood"] = 5
-            self.bc.res_cost["Stone"] = 20
+            self.bc.res_cost["Wood"] = 5
             
 
         elif building_type[b_type] == "Pyramid":
-            texture = "../res/stable.png"
-            self.bc.res_cost["Stone"] = 100
-            self.bc.res_cost["Wood"] = 100
+            texture = "./res/pyramid.png"
+            self.bc.res_cost["Wood"] = 1
+            self.bc.worker_cap = 10
+            self.bc.update_score()
             
         elif building_type[b_type] == "Lab":
             texture = "../res/lab.png"
