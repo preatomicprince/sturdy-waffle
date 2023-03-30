@@ -10,7 +10,7 @@ from pathlib import Path
 from resource import resources
 from entity import Ent_Comp
 from camera import Camera
-from UI import Buttons, Text, Tooltip
+from UI import Buttons, Text, Tooltip, Bar, bar
 
 class Keys_Down:
     def __init__(self):
@@ -56,7 +56,7 @@ class Level:
         self.keys_down = Keys_Down()
         self.button_list = []
         self.UI_text = []
-
+        self.bar_list = []
     def add_bg_tile(self, texture: str,  y_pos: float, coal: int = 0, stone: int = 0, wood: int = 0)->None:
         """Adds tiles to background list, in the specified y_pos. 
         AUtomatically fills next blank square in X direction"""
@@ -76,6 +76,7 @@ class Level:
             4.UI"""
 
         screen.fill((0,0,0))
+        
         
         for y in range(len(self.background)): #draw tiles
             for x in self.background[y]:
