@@ -19,13 +19,13 @@ class Character:
         self.ec = Ent_Comp(texture, pos)
         self.cc = Char_Comp()
         
-
     def kill(self):
         print("Ded")
 
     def update_frame(self):
-        if self.cc.frame_count >= len(self.cc.frames) -1:
-            self.cc.frame_count = 0
+        if self.cc.frame_count >= len(self.cc.frames) - 1:
+            if not self.cc.killed:
+                self.cc.frame_count = 0
         else:
             self.cc.frame_count += 1
         print(f"{self.cc.state} {self.cc.frame_count} {self.cc.frames[self.cc.frame_count-1]}")
@@ -33,7 +33,10 @@ class Character:
 
 
     def update_state(self):
-        if self.cc.dir.x > 0:
+        if self.cc.killed:
+            self.cc.state = "killed"
+            self.cc.frames = range(12, 16)
+        elif self.cc.dir.x > 0:
             self.cc.state = "Right"
             self.cc.frames = range(6, 9)
         elif self.cc.dir.x < 0:
@@ -46,12 +49,9 @@ class Character:
             self.cc.state = "Down"
             self.cc.frames = range(3, 6)
         else:
-            if not self.cc.killed:
-                self.cc.state = "still"
-                self.cc.frames = range(10, 11)
-            else:
-                self.cc.state = "killed"
-                self.cc.frames = range(12, 16)
+            self.cc.state = "still"
+            self.cc.frames = range(10, 11)
+          
 
         if self.cc.state != self.cc.prev_state:
             self.frame_count = 0

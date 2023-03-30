@@ -140,13 +140,10 @@ class Level:
                         break
             char.cc.aim = I_Vec2(-1, -1)
 
-        if char.ec.rect.x >= COL_COUNT*BG_TILE_SIZE:
-            char.ec.rect.x = 1
-        if char.ec.rect.x < 0:
-            char.ec.rect.x = COL_COUNT*BG_TILE_SIZE - 1
+        
 
         char.cc.dir = I_Vec2(0, 0)
-        if char.cc.aim.x >= 0 or char.cc.aim.y >= 0:        
+        if char.cc.aim.x >= 0 or char.cc.aim.y >= 0 and not char.cc.killed:        
             if (char.cc.aim.x > 4000 and char.ec.rect.x < 1000):
                 char.ec.rect.x -= char.cc.vel.x
                 char.cc.dir.x = -1
@@ -166,6 +163,11 @@ class Level:
             elif char.cc.aim.y < char.ec.rect.y:
                 char.ec.rect.y -= char.cc.vel.y
                 char.cc.dir.y = -1
+
+        if char.ec.rect.x >= COL_COUNT*BG_TILE_SIZE:
+            char.ec.rect.x = 1
+        if char.ec.rect.x < 0:
+            char.ec.rect.x = COL_COUNT*BG_TILE_SIZE - 1
 
         char.update_state()
 
@@ -252,8 +254,10 @@ class Level:
         if self.sunlight.rect.x >= COL_COUNT*BG_TILE_SIZE:
             self.sunlight.rect.x = 0
         for char in self.chars:
-            if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x, char.ec.rect.y, char.ec.rect.w, char.ec.rect.h)):
-                char.kill()
+            if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x + 50, char.ec.rect.y, char.ec.rect.w, char.ec.rect.h)):
+                char.cc.killed = True
+            if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x + 5050, char.ec.rect.y, char.ec.rect.w, char.ec.rect.h)):
+                char.cc.killed = True
         
         for y in range(len(self.background)): #draw tiles
             for ent in self.background[y]:
@@ -312,6 +316,9 @@ class Level:
             for char in self.chars:
                 if char.ec.ID == self.mouse.ent_ID:
                     char.cc.aim = I_Vec2(self.mouse.pos.x + self.cam.offset.x, self.mouse.pos.y + self.cam.offset.y)
+                if char.cc.state == "killed":
+                    print("ggggggggggggg")
+                    char.ec.aim = I_Vec2(char.ec.rect.x, char.ec.rect.y)
         
         if self.mouse.ent_type is Building:
             can_place: bool = True
