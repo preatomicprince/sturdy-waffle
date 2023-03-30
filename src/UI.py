@@ -34,6 +34,8 @@ class Text:
         rect.y = self.pos.y        
         screen.blit(surface, rect)
 
+
+
 class Button_Comp:
     def __init__(self):
         self.selected: bool = False

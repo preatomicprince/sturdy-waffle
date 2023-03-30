@@ -53,10 +53,9 @@ def main()->None:
     track.play_music()
     #BEGIN GAME LOOP
     while running:
+        
         """this will be the menu"""
         if state == True and game == True:
-            pass
-        if state == True:
             pass
         
         
@@ -68,11 +67,17 @@ def main()->None:
             bar.drawing(screen)
         """this is if you win the level"""
         if state == False and game == False:
-            pass
+            events(level)
+            end_text = Text("You win", I_Vec2(100, 100))
+            screen.fill((0, 0, 0))
+            end_text.draw(screen)
         
         """this is if you lose the game. it will need a quit option and a restart button"""
         if state == True and game == True:
-            pass
+            events(level)
+            end_text = Text("You lose", I_Vec2(100, 100))
+            screen.fill((0, 0, 0))
+            end_text.draw(screen)
         
         pygame.display.update()
         #print(clock.get_fps())

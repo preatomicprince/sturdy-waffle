@@ -369,7 +369,7 @@ class Level:
 
 def level_append(level: Level):
 
-    tile_list = [["./res/trees_1.png", "./res/tree2.png"],[ "./res/grass_1.png", "./res/grass2.png"], [ "./res/stone_dark.png", "./res/stone_light.png"], [ "./res/coal_dark.png", "./res/coal_light.png"]]
+    tile_list = [["./res/trees_1.png", "./res/tree2.png"],[ "./res/grass_1.png", "./res/grass_2.png"], [ "./res/stone_dark.png", "./res/stone_light.png"], [ "./res/coal_dark.png", "./res/coal_light.png"]]
     
     
     for y in range(ROW_COUNT):
@@ -412,9 +412,6 @@ def level_append(level: Level):
             level.UI_text.append(Text(f"{key}: {value}/{level.res[blood_str]}", I_Vec2(i*offset + 25, SCREEN_HEIGHT - TOOLBAR_HEIGHT)))
 
 
-        
 
-        
 
-def lose_screen():
-    screen.fill((0, 0, 0))
+
