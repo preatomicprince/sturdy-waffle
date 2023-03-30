@@ -58,10 +58,6 @@ def main()->None:
         if state == True and game == True:
 =======
         
-<<<<<<< HEAD
-        events(level)
-        level.update()
-        level.draw(screen)
 =======
         if state == True:
 >>>>>>> 0c1c5f7155c2efbd814f01d90c8664a45c67d8aa
