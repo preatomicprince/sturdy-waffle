@@ -33,7 +33,7 @@ class Build_Comp:
         return self.workers.pop()
         
     def update_score(self):
-        winning.sp + len(self.workers)
+        winning.sp = winning.sp + len(self.workers)
         
     def update_level_res(self, level_res: resources)-> resources:
         for (key, value) in self.res_time.items():

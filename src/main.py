@@ -6,10 +6,11 @@ from level import Level, level_append
 from UI import Buttons, Text, Bar, bar
 from resource import resources
 from event import events
+from music import *
 
 
 
-
+track.loading()
 
 
 def main()->None:
@@ -31,7 +32,7 @@ def main()->None:
     clock = pygame.time.Clock()
     level = Level()
     running = True
-
+    state = False
     level_append(level)
     
     """
@@ -44,14 +45,20 @@ def main()->None:
     *////////////////////////*
     """
     pygame.init()
-
+    track.play_music()
     #BEGIN GAME LOOP
     while running:
         
-        events(level)
-        level.update()
-        level.draw(screen)
-        bar.drawing(screen)
+        if state == True:
+            pass
+        
+        
+        elif state == False:
+            events(level)
+            level.update()
+            level.draw(screen)
+            
+            bar.drawing(screen)
         pygame.display.update()
         print(clock.get_fps())
         clock.tick(FPS) #Added FPS argument to limit framerate
