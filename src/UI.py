@@ -52,7 +52,7 @@ class Buttons:
         screen.blit(self.ec.texture, (self.ec.rect.x, self.ec.rect.y))
 
 class Tooltip:
-    colour = (64, 64, 64)
+    colour = (0, 0,16)
     def __init__(self):
         self.rect = pygame.Rect(0, 0, 0, 0)
         self.texts: list(Text) = []
