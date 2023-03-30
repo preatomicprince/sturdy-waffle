@@ -66,7 +66,6 @@ def main()->None:
             level.draw(screen)
             
             bar.drawing(screen)
-        
         """this is if you win the level"""
         if state == False and game == False:
             pass
