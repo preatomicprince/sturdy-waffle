@@ -136,8 +136,8 @@ class Level:
         
         
         
-        if len(self.buildings[0].bc.workers) <= self.buildings[0].bc.worker_cap:
-            game = False
+        if len(self.buildings[0].bc.workers) >= self.buildings[0].bc.worker_cap:
+            self.game = False
 
 
         pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(10, 10, prog_bar_w, 60))
