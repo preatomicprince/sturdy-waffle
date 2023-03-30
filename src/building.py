@@ -10,6 +10,7 @@ import pygame
 from definitions import *
 from entity import Ent_Comp
 from copy import copy
+from character import Character
 from resource import resources, Win_State, winning
 
 
@@ -33,14 +34,7 @@ class Build_Comp:
     def update_score(self):
         winning.sp = winning.sp + len(self.workers)
         
-    def update_level_res(self, level_res: resources)-> resources:
-        for (key, value) in self.res_time.items():
-            self.res_time[key] += (1000/FPS)*len(self.workers)
-            if self.res[key] <= self.res_time[key] and self.res[key] > 0:
-                level_res[key] += 1
-                self.res_time[key] = 0
-        
-        return level_res
+    
 
     
 class Building:
@@ -78,5 +72,19 @@ class Building:
             texture = "../res/lab.png"
 
         self.ec = Ent_Comp(texture, pos)
+
+    def update_level_res(self, level_res: resources, level_chars)-> resources:
+        for (key, value) in self.bc.res_time.items():
+            self.bc.res_time[key] += (1000/FPS)*len(self.bc.workers)
+            if self.bc.res[key] <= self.bc.res_time[key] and self.bc.res[key] > 0:
+                if key == "Blood":
+                    if level_res["pop. "] >= level_res["Blood"]:
+                        continue
+                    level_chars.append(Character(None, I_Vec2(self.ec.rect.x - 100, self.ec.rect.y)))
+                    
+                level_res[key] += 1
+                self.bc.res_time[key] = 0
+        
+        return level_res, level_chars
 
     

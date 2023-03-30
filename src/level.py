@@ -50,6 +50,7 @@ class Level:
         self.chars:list(Character) = []
         self.res:dict = copy(resources) #count of player resources
         self.res["Wood"] += 100
+        self.res["Blood"] = 5
         self.sunlight = sunlight()
         self.cam = Camera()
         self.mouse = Mouse()
@@ -130,9 +131,9 @@ class Level:
         prog_bar_w = (len(self.buildings[0].bc.workers)/self.buildings[0].bc.worker_cap)*SCREEN_WIDTH - 20
         pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(30, 10, prog_bar_w, 60))
     
+       
     def _update_buiding(self, building: Building):
-        self.res = building.bc.update_level_res(self.res)    
-        
+        self.res, self.chars = building.update_level_res(self.res, self.chars)        
     def _update_char(self, char: Character):
         if char.cc.aim == char.ec.rect:
             for building in self.buildings:
@@ -245,6 +246,13 @@ class Level:
             if key != "Pop. ":
                 self.UI_text.append(Text(f"{key}: {value}", I_Vec2(i*offset + 40, SCREEN_HEIGHT - TOOLBAR_HEIGHT+4)))
             else:
+                pop_num = 0
+                blood_num = self.res["Blood"]
+                for j in self.chars:
+                    if j.cc.killed == False:
+                        pop_num += 1
+                    else:
+                        blood_num -= 1
                 blood_str = "Blood"
                 self.UI_text.append(Text(f"{key}: {value}/{self.res[blood_str]}", I_Vec2(i*offset + 25, SCREEN_HEIGHT - TOOLBAR_HEIGHT)))
 
@@ -262,8 +270,14 @@ class Level:
 
         for char in self.chars:
             if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x + 50, char.ec.rect.y, char.ec.rect.w, char.ec.rect.h)):
+                if char.cc.killed == False:
+                    self.res["Pop. "] -= 1
+                    self.res["Blood"] -= 1
                 char.cc.killed = True
             if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x + 5050, char.ec.rect.y, char.ec.rect.w, char.ec.rect.h)):
+                if char.cc.killed == False:
+                    self.res["Pop. "] -= 1
+                    self.res["Blood"] -= 1
                 char.cc.killed = True
         
         for y in range(len(self.background)): #draw tiles
@@ -281,12 +295,18 @@ class Level:
                     worker_ID = b.bc.rm_worker()
                     for char in self.chars:
                         if char.ec.ID == worker_ID:
+                            if char.cc.killed == False:
+                                self.res["Pop. "] -= 1
+                                self.res["Blood"] -= 1
                             char.cc.killed = True
             elif self.sunlight.rect.x < ent.ec.rect.x + 5000 < self.sunlight.rect.x + self.sunlight.rect.w:
-                for i in b.bc.workers:
-                    worker_ID = b.bc.rm_worker()
+                for i in ent.bc.workers:
+                    worker_ID = ent.bc.rm_worker()
                     for char in self.chars:
                         if char.ec.ID == worker_ID:
+                            if char.cc.killed == False:
+                                self.res["Pop. "] -= 1
+                                self.res["Blood"] -= 1
                             char.cc.killed = True
             
     
@@ -296,7 +316,6 @@ class Level:
         self._update_text()
         for building in self.buildings:
             self._update_buiding(building)
-            print(f"building{building.bc.b_type} workers {len(building.bc.workers)}")
         for character in self.chars:
             self._update_char(character)
         self._update_sunlight()
@@ -336,7 +355,7 @@ class Level:
         if self.mouse.ent_type is Character:
             for char in self.chars:
                 if char.ec.ID == self.mouse.ent_ID:
-                    char.cc.aim = I_Vec2(self.mouse.pos.x + self.cam.offset.x, self.mouse.pos.y + self.cam.offset.y)
+                    char.cc.aim = I_Vec2((self.mouse.pos.x + self.cam.offset.x) - (self.mouse.pos.x + self.cam.offset.x)%Char_Comp.speed, (self.mouse.pos.y + self.cam.offset.y) - (self.mouse.pos.y + self.cam.offset.y)%Char_Comp.speed)
                 if char.cc.state == "killed":
                     char.ec.aim = I_Vec2(char.ec.rect.x, char.ec.rect.y)
         

@@ -53,10 +53,11 @@ def main()->None:
     track.play_music()
     #BEGIN GAME LOOP
     while running:
-        
+
         """this will be the menu"""
         if state == True and game == True:
             pass
+
         
         
         if state == False and game == True:
@@ -64,7 +65,7 @@ def main()->None:
             level.update()
             level.draw(screen)
             
-            bar.drawing(screen)
+            
         """this is if you win the level"""
         if state == False and game == False:
             events(level)
