@@ -86,7 +86,10 @@ class Level:
                     if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH):
                         screen.blit(x.ec.texture, 
                         (x.ec.rect.x - self.cam.offset.x + COL_COUNT*BG_TILE_SIZE, x.ec.rect.y - self.cam.offset.y))
-    
+        
+        for building in self.buildings:
+            screen.blit(building.ec.texture, ((building.ec.rect.x - self.cam.offset.x), 
+                                                building.ec.rect.y - self.cam.offset.y))   
             
         for character in self.chars:
             if character.ec.visible:
@@ -96,9 +99,7 @@ class Level:
                             screen.blit(character.ec.texture, 
                             (character.ec.rect.x - self.cam.offset.x + COL_COUNT*BG_TILE_SIZE, character.ec.rect.y - self.cam.offset.y))
         
-        for building in self.buildings:
-            screen.blit(building.ec.texture, ((building.ec.rect.x - self.cam.offset.x), 
-                                                building.ec.rect.y - self.cam.offset.y))
+
 
         
         if self.mouse.building != None:
@@ -128,6 +129,9 @@ class Level:
                 i.draw(screen)
         prog_bar_w = (len(self.buildings[0].bc.workers)/self.buildings[0].bc.worker_cap)*SCREEN_WIDTH - 20
         pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(30, 10, prog_bar_w, 60))
+    
+    def _update_buiding(self, building: Building):
+        self.res = building.bc.update_level_res(self.res)    
         
     def _update_char(self, char: Character):
         if char.cc.aim == char.ec.rect:
@@ -171,8 +175,7 @@ class Level:
         char.update_state()
 
 
-    def _update_buiding(self, building: Building):
-        self.res = building.bc.update_level_res(self.res)
+
 
         
 
@@ -365,7 +368,7 @@ class Level:
 
 def level_append(level: Level):
 
-    tile_list = [["./res/trees_1.png", "./res/tree2.png"],[ "./res/grass_1.png", "./res/grass_2.png"], [ "./res/stone_dark.png", "./res/stone_light.png"], [ "./res/coal_dark.png", "./res/coal_light.png"]]
+    tile_list = [["./res/tree_1.png", "./res/tree_2.png"],[ "./res/grass_1.png", "./res/grass_2.png"], [ "./res/stone_dark.png", "./res/stone_light.png"], [ "./res/coal_dark.png", "./res/coal_light.png"]]
     
     
     for y in range(ROW_COUNT):

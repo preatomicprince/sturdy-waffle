@@ -10,7 +10,7 @@ class Bar:
         self.sacrifice_progress = 1
         self.sacrifice_bar = 60
         self.sacrifice_bar_lengh = self.sacrifice_bar * self.sacrifice_progress
-        self.RED = (255, 0, 0)
+        self.RED = (136, 8, 8)
         
     def drawing(self, screen):
         self.sacrifice_bar_lengh = self.sacrifice_bar * winning.sp
