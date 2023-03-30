@@ -55,7 +55,7 @@ def main()->None:
     while running:
         """this will be the menu"""
         if state == True and game == True:
-        
+            pass
         if state == True:
             pass
         
