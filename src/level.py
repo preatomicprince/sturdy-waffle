@@ -367,7 +367,8 @@ class Level:
         if self.mouse.ent_type is Character:
             for char in self.chars:
                 if char.ec.ID == self.mouse.ent_ID:
-                    char.cc.aim = I_Vec2((self.mouse.pos.x + self.cam.offset.x) - (self.mouse.pos.x + self.cam.offset.x)%Char_Comp.speed, (self.mouse.pos.y + self.cam.offset.y) - (self.mouse.pos.y + self.cam.offset.y)%Char_Comp.speed)
+                    char.cc.aim = I_Vec2((self.mouse.pos.x + self.cam.offset.x - BG_TILE_SIZE/2) - (self.mouse.pos.x + self.cam.offset.x - BG_TILE_SIZE/2)%Char_Comp.speed, 
+                    (self.mouse.pos.y + self.cam.offset.y - BG_TILE_SIZE + 20) - (self.mouse.pos.y + self.cam.offset.y - BG_TILE_SIZE + 20)%Char_Comp.speed)
                 if char.cc.state == "killed":
                     char.ec.aim = I_Vec2(char.ec.rect.x, char.ec.rect.y)
         
