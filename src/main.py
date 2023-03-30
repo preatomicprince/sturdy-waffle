@@ -53,14 +53,9 @@ def main()->None:
     track.play_music()
     #BEGIN GAME LOOP
     while running:
-<<<<<<< HEAD
+
         """this will be the menu"""
         if state == True and game == True:
-=======
-        
-=======
-        if state == True:
->>>>>>> 0c1c5f7155c2efbd814f01d90c8664a45c67d8aa
             pass
         
         
@@ -70,7 +65,7 @@ def main()->None:
             level.draw(screen)
             
             bar.drawing(screen)
-<<<<<<< HEAD
+
         
         """this is if you win the level"""
         if state == False and game == False:
@@ -80,9 +75,6 @@ def main()->None:
         if state == True and game == True:
             pass
         
-=======
->>>>>>> 9998205fbdf6fa7a1109020348aea3808734311e
->>>>>>> 0c1c5f7155c2efbd814f01d90c8664a45c67d8aa
         pygame.display.update()
         #print(clock.get_fps())
         clock.tick() #Added FPS argument to limit framerate
