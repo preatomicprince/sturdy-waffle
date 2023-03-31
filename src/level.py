@@ -218,7 +218,7 @@ class Level:
         for ent in chain(self.buildings, self.button_list):
             collide = None
 
-#TODO FIX LOOPING TOOLTIP DISPLAY ISSUE
+        #TODO FIX LOOPING TOOLTIP DISPLAY ISSUE
 
             if type(ent) == Building:
                 if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE)/2:
@@ -430,14 +430,23 @@ class Level:
 
         for building in self.buildings:
             if len(building.bc.workers) > 0 and self.mouse.ent_ID == None:
-                if building.ec.rect.collidepoint(self.mouse.pos.tup()):
+
+                if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE)/2:
+                    if building.ec.rect.collidepoint(self.mouse.pos.x - COL_COUNT*BG_TILE_SIZE + self.cam.offset.x, self.mouse.pos.y + self.cam.offset.y):
+                        rm_id = building.bc.rm_worker()
+                        for char in self.chars:
+                            if char.ec.ID == rm_id:
+                                char.ec.visible = True
+                                char.ec.rect.x = building.ec.rect.x - BG_TILE_SIZE
+                                char.ec.rect.y = building.ec.rect.y
+
+                if building.ec.rect.collidepoint(self.mouse.pos.x + self.cam.offset.x, self.mouse.pos.y + self.cam.offset.y):
                     rm_id = building.bc.rm_worker()
                     for char in self.chars:
                         if char.ec.ID == rm_id:
                             char.ec.visible = True
                             char.ec.rect.x = building.ec.rect.x - BG_TILE_SIZE
                             char.ec.rect.y = building.ec.rect.y
-                            break
 
         self.mouse.deselect()
 
