@@ -12,10 +12,10 @@ def events(level: Level)->None:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 level.left_click()
-                print("left\n")
+                
             if event.button == 3:
                 level.right_click()
-                print("Right\n")
+                
         
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT or event.key == pygame.K_a:

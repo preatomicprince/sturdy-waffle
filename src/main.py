@@ -52,8 +52,8 @@ def main()->None:
     pygame.display.set_caption("In the Dark")
     track.play_music()
     #BEGIN GAME LOOP
-    start_img = pygame.image.load("./res/start_button.png").convert_alpha()
-    info_img = pygame.image.load("./res/start_button.png").convert_alpha()
+    start_img = pygame.image.load("./res/play_button.png").convert_alpha()
+    info_img = pygame.image.load("./res/how_to_button.png").convert_alpha()
     exit_img = pygame.image.load("./res/exit_button.png").convert_alpha()
     
     while running:
