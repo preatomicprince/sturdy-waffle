@@ -93,7 +93,12 @@ class Level:
         
         for building in self.buildings:
             screen.blit(building.ec.texture, ((building.ec.rect.x - self.cam.offset.x), 
-                                                building.ec.rect.y - self.cam.offset.y))   
+                                                building.ec.rect.y - self.cam.offset.y))
+            if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH):
+                screen.blit(building.ec.texture, 
+                (building.ec.rect.x - self.cam.offset.x + COL_COUNT*BG_TILE_SIZE, building.ec.rect.y - self.cam.offset.y))
+        
+
             
         for character in self.chars:
             if character.ec.visible:
@@ -102,9 +107,6 @@ class Level:
                 if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH):
                             screen.blit(character.ec.texture, 
                             (character.ec.rect.x - self.cam.offset.x + COL_COUNT*BG_TILE_SIZE, character.ec.rect.y - self.cam.offset.y))
-        
-
-
         
         if self.mouse.building != None:
             screen.blit(self.mouse.building.ec.texture, ((self.mouse.building.ec.rect.x - self.cam.offset.x), 
