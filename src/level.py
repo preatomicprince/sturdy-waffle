@@ -390,9 +390,17 @@ class Level:
             
         if self.mouse.ent_type is Character:
             for char in self.chars:
+                x_aim = 0
                 if char.ec.ID == self.mouse.ent_ID:
-                    char.cc.aim = I_Vec2((self.mouse.pos.x + self.cam.offset.x - BG_TILE_SIZE/2) - (self.mouse.pos.x + self.cam.offset.x - BG_TILE_SIZE/2)%Char_Comp.speed, 
-                    (self.mouse.pos.y + self.cam.offset.y - BG_TILE_SIZE + 20) - (self.mouse.pos.y + self.cam.offset.y - BG_TILE_SIZE + 20)%Char_Comp.speed)
+                    if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE)/2:
+                        x_aim = (self.mouse.pos.x + self.cam.offset.x - COL_COUNT*BG_TILE_SIZE - BG_TILE_SIZE/2) - (self.mouse.pos.x + self.cam.offset.x - COL_COUNT*BG_TILE_SIZE- BG_TILE_SIZE/2)%Char_Comp.speed
+                        if x_aim < 0:
+                            x_aim += COL_COUNT*BG_TILE_SIZE
+                    else:
+                        x_aim = (self.mouse.pos.x + self.cam.offset.x - BG_TILE_SIZE/2) - (self.mouse.pos.x + self.cam.offset.x - BG_TILE_SIZE/2)%Char_Comp.speed
+
+                    char.cc.aim = I_Vec2(x_aim, (self.mouse.pos.y + self.cam.offset.y - BG_TILE_SIZE + 20) - (self.mouse.pos.y + self.cam.offset.y - BG_TILE_SIZE + 20)%Char_Comp.speed)
+                    print(f"X: {char.cc.aim.x} y: {char.cc.aim.y}")
                 if char.cc.state == "killed":
                     char.ec.aim = I_Vec2(char.ec.rect.x, char.ec.rect.y)
         
