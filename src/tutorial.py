@@ -14,6 +14,6 @@ sac_text = Text("Vampires can be sacrificed in the temple building", I_Vec2(100,
 ten_vamp = Text("Once ten vampires have been sacrificed in the temple the sun will be blocked out and you win the game", I_Vec2(100, 100))
 ten_vamp = Text("You can see your progress in the bar above", I_Vec2(100, 100))
 
-def Tutorial():
+def Tutorial(screen):
     if tute == True:
         pass
