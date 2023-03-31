@@ -61,6 +61,7 @@ class Level:
         self.bar_list = []
         self.state = True
         self.game = False
+        
 
     def add_bg_tile(self, texture: str,  y_pos: float, coal: int, stone: int, wood: int)->None:
         """Adds tiles to background list, in the specified y_pos. 

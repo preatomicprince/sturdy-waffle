@@ -7,7 +7,7 @@ from UI import Buttons, Text, Bar, bar
 from resource import resources
 from event import events
 from music import *
-
+from tutorial import *
 
 
 
@@ -53,6 +53,7 @@ def main()->None:
     track.play_music()
     #BEGIN GAME LOOP
     start_img = pygame.image.load("./res/start_button.png").convert_alpha()
+    info_img = pygame.image.load("./res/start_button.png").convert_alpha()
     exit_img = pygame.image.load("./res/exit_button.png").convert_alpha()
     
     while running:
@@ -61,16 +62,22 @@ def main()->None:
         if level.state == True and level.game == False:
             screen.fill((118, 145, 130))
             events(level)
-    
+            
             start_button = Menu(275, 200, start_img, 1)   
-            exit_button = Menu(275, 400, exit_img, 1) 
+            info_button = Menu(275, 320, info_img, 1)   
+            exit_button = Menu(275, 440, exit_img, 1) 
             
             if start_button.draw(screen):
                 level.state = False
                 level.game = True
-                
+            
             if exit_button.draw(screen):
                 sys.exit()
+            
+            if info_button.draw(screen):
+                Tutorial(screen)
+            
+            
                 
         if level.state == False and level.game == True:
             events(level)
