@@ -314,13 +314,13 @@ class Level:
 
 
         for char in self.chars:
-            if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x + 50, char.ec.rect.y, char.ec.rect.w, char.ec.rect.h)):
+            if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x + 20, char.ec.rect.y,  10, char.ec.rect.h)):
                 if char.cc.killed == False:
                     if char.ec.ID not in self.buildings[0].bc.workers:
                         self.res["Pop. "] -= 1
                         self.res["Blood"] -= 1
                 char.cc.killed = True
-            if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x + 5050, char.ec.rect.y, char.ec.rect.w, char.ec.rect.h)):
+            if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x + 30 + COL_COUNT*BG_TILE_SIZE, char.ec.rect.y, 10, char.ec.rect.h)):                     
                 if char.cc.killed == False:
                     if char.ec.ID not in self.buildings[0].bc.workers:
                         self.res["Pop. "] -= 1
@@ -339,8 +339,8 @@ class Level:
         for ent in self.buildings:
             if self.sunlight.rect.x < ent.ec.rect.x < self.sunlight.rect.x + self.sunlight.rect.w:
                 if ent.bc.b_type != 5:
-                    for i in b.bc.workers:
-                        worker_ID = b.bc.rm_worker()
+                    for i in ent.bc.workers:
+                        worker_ID = ent.bc.rm_worker()
                         for char in self.chars:
                             if char.ec.ID == worker_ID:
                                 if char.cc.killed == False:
