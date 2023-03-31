@@ -52,13 +52,13 @@ class Building:
             self.bc.res_cost["Wood"] = 15
             
         elif building_type[b_type] == "Mine":
-            texture = "./res/mine.png"
+            texture = ["./res/mine.png", "./res/mine_grey.png"]
             self.bc.res["Stone"] = 5000
             self.bc.res_cost["Wood"] = 15 
              
 
         elif building_type[b_type] == "Lumber_Mill":
-            texture = "./res/lumber_mill.png"
+            texture = ["./res/lumber_mill.png", "./res/lumber_mill_grey.png"]
             self.bc.res["Wood"] = 5
             self.bc.res_cost["Wood"] = 5
             

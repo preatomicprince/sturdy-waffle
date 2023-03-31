@@ -26,7 +26,8 @@ class Mouse:
         self.ent_type: type = None
         self.tip = Tooltip()
         self.building: Building = None
-    
+        self.can_place = True
+
     def update_pos(self)->None:
         self.pos.x, self.pos.y = pygame.mouse.get_pos()
 
@@ -60,12 +61,13 @@ class Level:
         self.bar_list = []
         self.state = False
         self.game = True
-    def add_bg_tile(self, texture: str,  y_pos: float, coal: int = 0, stone: int = 0, wood: int = 0)->None:
+
+    def add_bg_tile(self, texture: str,  y_pos: float, coal: int, stone: int, wood: int)->None:
         """Adds tiles to background list, in the specified y_pos. 
         AUtomatically fills next blank square in X direction"""
         column: int = len(self.background[y_pos])*BG_TILE_SIZE
         pos = F_Vec2(column, y_pos*BG_TILE_SIZE)
-        self.background[y_pos].append(BG_Tile(texture, pos))
+        self.background[y_pos].append(BG_Tile(texture, pos, coal, stone, wood))
 
     def add_char(self, texture: str, pos: F_Vec2):
         self.chars.append(Character(texture, pos))
@@ -79,7 +81,6 @@ class Level:
             4.UI"""
 
         screen.fill((0,0,0))
-        
         
         for y in range(len(self.background)): #draw tiles
             for x in self.background[y]:
@@ -141,8 +142,6 @@ class Level:
 
 
         pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(10, 10, prog_bar_w, 60))
-    
-
        
     def _update_buiding(self, building: Building):
         self.res, self.chars = building.update_level_res(self.res, self.chars)  
@@ -186,20 +185,36 @@ class Level:
         if char.ec.rect.x < 0:
             char.ec.rect.x = COL_COUNT*BG_TILE_SIZE - 1
 
-        char.update_state()
-
-    
-
-        
+        char.update_state()       
 
     def _update_mouse(self):
         self.mouse.update_pos()
         if self.mouse.building != None:
             self.mouse.building.ec.rect.x, self.mouse.building.ec.rect.y = self.mouse.pos.x - self.mouse.pos.x%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE
+            if self.mouse.building.bc.b_type == 4:
+                for y in range(len(self.background)): #draw tiles
+                    for ent in self.background[y]:
+                        if ent.ec.rect.collidepoint(self.mouse.pos.x + self.cam.offset.x, self.mouse.pos.y + self.cam.offset.y ):
+                            if ent.res["Wood"] == 1:
+                                self.mouse.building.ec.texture = self.mouse.building.ec.texture_list[0]
+                                self.mouse.can_place = True
+                            else:
+                                self.mouse.building.ec.texture = self.mouse.building.ec.texture_list[1]
+                                self.mouse.can_place = False  
+            if self.mouse.building.bc.b_type == 3:
+                for y in range(len(self.background)): #draw tiles
+                    for ent in self.background[y]:
+                        if ent.ec.rect.collidepoint(self.mouse.pos.x + self.cam.offset.x, self.mouse.pos.y + self.cam.offset.y ):
+                            if ent.res["Stone"] == 1:
+                                self.mouse.building.ec.texture = self.mouse.building.ec.texture_list[0]
+                                self.mouse.can_place = True
+                            else:
+                                self.mouse.building.ec.texture = self.mouse.building.ec.texture_list[1]
+                                self.mouse.can_place = False
+
         self.mouse.tip.visible = False
         for ent in chain(self.buildings, self.button_list):
             collide = None
-            print(type(ent))
             if type(ent) == Building:
                 collide = ent.ec.rect.collidepoint(self.mouse.pos.x + self.cam.offset.x, self.mouse.pos.y + self.cam.offset.y )
                 self.mouse.tip.rect.x, self.mouse.tip.rect.y = ent.ec.rect.x + ent.ec.rect.w - self.cam.offset.x, ent.ec.rect.y - self.cam.offset.y + 25
@@ -380,11 +395,10 @@ class Level:
                     char.ec.aim = I_Vec2(char.ec.rect.x, char.ec.rect.y)
         
         if self.mouse.ent_type is Building:
-            can_place: bool = True
             for building in self.buildings: #Check no building already on square
                 if building.ec.rect.x == self.mouse.building.ec.rect.x and building.ec.rect.y == self.mouse.building.ec.rect.y:
-                    can_place = False
-            if can_place:
+                    self.mouse.can_place = False
+            if self.mouse.can_place:
                 for key, value in resources.items():
                     self.res[key] -= button.building.bc.res_cost[key]
                 self.buildings.append(Building(self.mouse.building.bc.b_type, I_Vec2(self.mouse.pos.x - self.mouse.pos.x%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
@@ -411,8 +425,16 @@ def level_append(level: Level):
     
     
     for y in range(ROW_COUNT):
-        for x in range(COL_COUNT):                                                                                           
-            level.add_bg_tile(random.choice(tile_list), y)
+        for x in range(COL_COUNT):
+            tile = random.choice(range(len(tile_list)))
+            coal = 0
+            stone = 0
+            wood = 0 
+            if tile == 0:
+                wood = 1
+            if tile == 2:
+                stone = 1                                                                     
+            level.add_bg_tile(tile_list[tile], y, coal, stone, wood)
 
     char_frames = []
     for i in range(1, 17):
