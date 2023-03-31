@@ -190,7 +190,7 @@ class Level:
     def _update_mouse(self):
         self.mouse.update_pos()
         if self.mouse.building != None:
-            self.mouse.building.ec.rect.x, self.mouse.building.ec.rect.y = self.mouse.pos.x - self.mouse.pos.x%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE
+            self.mouse.building.ec.rect.x, self.mouse.building.ec.rect.y = (self.mouse.pos.x + self.cam.offset.x) - (self.mouse.pos.x + self.cam.offset.x)%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE
             if self.mouse.building.bc.b_type == 4:
                 for y in range(len(self.background)): #draw tiles
                     for ent in self.background[y]:
@@ -401,7 +401,7 @@ class Level:
             if self.mouse.can_place:
                 for key, value in resources.items():
                     self.res[key] -= button.building.bc.res_cost[key]
-                self.buildings.append(Building(self.mouse.building.bc.b_type, I_Vec2(self.mouse.pos.x - self.mouse.pos.x%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
+                self.buildings.append(Building(self.mouse.building.bc.b_type, I_Vec2((self.mouse.pos.x + self.cam.offset.x) - (self.mouse.pos.x + self.cam.offset.x)%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
 
         for building in self.buildings:
             if len(building.bc.workers) > 0 and self.mouse.ent_ID == None:
