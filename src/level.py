@@ -446,7 +446,7 @@ class Level:
 
 def level_append(level: Level):
 
-    tile_list = [["./res/tree_1.png", "./res/tree_2.png"],[ "./res/grass_1.png", "./res/grass_2.png"], [ "./res/stone_dark.png", "./res/stone_light.png"], [ "./res/coal_dark.png", "./res/coal_light.png"]]
+    tile_list = [["./res/tree_1.png", "./res/tree_2.png"],[ "./res/grass_1.png", "./res/grass_2.png"], [ "./res/stone_dark.png", "./res/stone_light.png"], [ "./res/coal_dark.png", "./res/coal_light.png"], [ "./res/grass_2_dark.png", "./res/grass_2_light.png"]]
     
     
     for y in range(ROW_COUNT):
