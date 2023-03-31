@@ -29,7 +29,8 @@ class Build_Comp:
             self.workers.append(int(ec_ID))
 
     def rm_worker(self)->int:
-        return self.workers.pop()
+        if self.b_type != 5:
+            return self.workers.pop()
         
     def update_score(self):
         winning.sp = winning.sp + len(self.workers)

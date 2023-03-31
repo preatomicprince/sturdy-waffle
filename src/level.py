@@ -41,7 +41,7 @@ class sunlight:
         self.rect = pygame.Rect(2500, 0, (COL_COUNT/2)*BG_TILE_SIZE, ROW_COUNT*BG_TILE_SIZE)
         self.sl_pos = I_Vec2(self.rect.x, self.rect.y)
         self.timer = 0
-        self.update_time = 50000
+        self.update_time = 5000
 
 class Level:
     """Struct to hold all level data and objects """
@@ -217,9 +217,17 @@ class Level:
         self.mouse.tip.visible = False
         for ent in chain(self.buildings, self.button_list):
             collide = None
+
+#TODO FIX LOOPING TOOLTIP DISPLAY ISSUE
+
             if type(ent) == Building:
-                collide = ent.ec.rect.collidepoint(self.mouse.pos.x + self.cam.offset.x, self.mouse.pos.y + self.cam.offset.y )
-                self.mouse.tip.rect.x, self.mouse.tip.rect.y = ent.ec.rect.x + ent.ec.rect.w - self.cam.offset.x, ent.ec.rect.y - self.cam.offset.y + 25
+                if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE)/2:
+                    collide = ent.ec.rect.collidepoint(self.mouse.pos.x + self.cam.offset.x + COL_COUNT*BG_TILE_SIZE, self.mouse.pos.y + self.cam.offset.y )
+                    self.mouse.tip.rect.x, self.mouse.tip.rect.y = ent.ec.rect.x + ent.ec.rect.w - self.cam.offset.x + COL_COUNT*BG_TILE_SIZE, ent.ec.rect.y - self.cam.offset.y + 25
+                else:
+                    collide = ent.ec.rect.collidepoint(self.mouse.pos.x + self.cam.offset.x, self.mouse.pos.y + self.cam.offset.y )
+                    self.mouse.tip.rect.x, self.mouse.tip.rect.y = ent.ec.rect.x + ent.ec.rect.w - self.cam.offset.x , ent.ec.rect.y - self.cam.offset.y + 25
+            
             elif type(ent) == Buttons:
                 collide = ent.ec.rect.collidepoint(self.mouse.pos.tup())
                 self.mouse.tip.rect.x, self.mouse.tip.rect.y = ent.ec.rect.x + ent.ec.rect.w, ent.ec.rect.y
@@ -307,13 +315,15 @@ class Level:
         for char in self.chars:
             if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x + 50, char.ec.rect.y, char.ec.rect.w, char.ec.rect.h)):
                 if char.cc.killed == False:
-                    self.res["Pop. "] -= 1
-                    self.res["Blood"] -= 1
+                    if char.ec.ID not in self.buildings[0].bc.workers:
+                        self.res["Pop. "] -= 1
+                        self.res["Blood"] -= 1
                 char.cc.killed = True
             if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x + 5050, char.ec.rect.y, char.ec.rect.w, char.ec.rect.h)):
                 if char.cc.killed == False:
-                    self.res["Pop. "] -= 1
-                    self.res["Blood"] -= 1
+                    if char.ec.ID not in self.buildings[0].bc.workers:
+                        self.res["Pop. "] -= 1
+                        self.res["Blood"] -= 1
                 char.cc.killed = True
         
         for y in range(len(self.background)): #draw tiles
@@ -327,23 +337,25 @@ class Level:
 
         for ent in self.buildings:
             if self.sunlight.rect.x < ent.ec.rect.x < self.sunlight.rect.x + self.sunlight.rect.w:
-                for i in b.bc.workers:
-                    worker_ID = b.bc.rm_worker()
-                    for char in self.chars:
-                        if char.ec.ID == worker_ID:
-                            if char.cc.killed == False:
-                                self.res["Pop. "] -= 1
-                                self.res["Blood"] -= 1
-                            char.cc.killed = True
+                if ent.bc.b_type != 5:
+                    for i in b.bc.workers:
+                        worker_ID = b.bc.rm_worker()
+                        for char in self.chars:
+                            if char.ec.ID == worker_ID:
+                                if char.cc.killed == False:
+                                    self.res["Pop. "] -= 1
+                                    self.res["Blood"] -= 1
+                                char.cc.killed = True
             elif self.sunlight.rect.x < ent.ec.rect.x + 5000 < self.sunlight.rect.x + self.sunlight.rect.w:
-                for i in ent.bc.workers:
-                    worker_ID = ent.bc.rm_worker()
-                    for char in self.chars:
-                        if char.ec.ID == worker_ID:
-                            if char.cc.killed == False:
-                                self.res["Pop. "] -= 1
-                                self.res["Blood"] -= 1
-                            char.cc.killed = True
+                if ent.bc.b_type != 5:
+                    for i in ent.bc.workers:
+                        worker_ID = ent.bc.rm_worker()
+                        for char in self.chars:
+                            if char.ec.ID == worker_ID:
+                                if char.cc.killed == False:
+                                    self.res["Pop. "] -= 1
+                                    self.res["Blood"] -= 1
+                                char.cc.killed = True
             
     
     def update(self):
