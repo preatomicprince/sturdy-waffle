@@ -38,7 +38,7 @@ class Mouse:
 
 class sunlight:
     def __init__(self):
-        self.rect = pygame.Rect(1250, 0, (COL_COUNT/2)*BG_TILE_SIZE, ROW_COUNT*BG_TILE_SIZE)
+        self.rect = pygame.Rect( SCREEN_WIDTH - 400, 0, (COL_COUNT/2)*BG_TILE_SIZE, ROW_COUNT*BG_TILE_SIZE)
         self.sl_pos = I_Vec2(self.rect.x, self.rect.y)
         self.timer = 0
         self.update_time = 5000
@@ -337,7 +337,9 @@ class Level:
                     ent.ec.texture = ent.ec.texture_list[0]
 
         for ent in self.buildings:
+            ent.ec.texture = ent.ec.texture_list[0]
             if self.sunlight.rect.x < ent.ec.rect.x < self.sunlight.rect.x + self.sunlight.rect.w:
+                ent.ec.texture = ent.ec.texture_list[1]
                 if ent.bc.b_type != 5:
                     for i in ent.bc.workers:
                         worker_ID = ent.bc.rm_worker()
@@ -348,6 +350,7 @@ class Level:
                                     self.res["Blood"] -= 1
                                 char.cc.killed = True
             elif self.sunlight.rect.x < ent.ec.rect.x + COL_COUNT*BG_TILE_SIZE < self.sunlight.rect.x + self.sunlight.rect.w:
+                ent.ec.texture = ent.ec.texture_list[1]
                 if ent.bc.b_type != 5:
                     for i in ent.bc.workers:
                         worker_ID = ent.bc.rm_worker()
@@ -511,7 +514,7 @@ def level_append(level: Level):
       
     level.button_list.append(Buttons(I_Vec2(600, 620), "./res/arrow_left.png", 1))
 
-    level.buildings.append(Building(5, I_Vec2(500, 500)))
+    level.buildings.append(Building(5, I_Vec2(400, 200)))
 
     offset = (SCREEN_WIDTH/len(resources.items()))
 
