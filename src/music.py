@@ -31,3 +31,4 @@ class Sounds:
         
 click_s = Sounds("skiingsound", "./res/click_sound.wav")
 death_s = Sounds("skiingsound", "./res/possible death sound.wav")
+build_s = Sounds("skiingsound", "./res/building_placement.wav")

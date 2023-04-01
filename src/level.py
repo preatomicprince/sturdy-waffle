@@ -11,7 +11,7 @@ from resource import resources
 from entity import Ent_Comp
 from camera import Camera
 from UI import Buttons, Text, Tooltip, Bar, bar
-from music import Sounds, click_s, death_s
+from music import Sounds, click_s, death_s, build_s
 class Keys_Down:
     def __init__(self):
         self.left: bool = 0
@@ -443,6 +443,7 @@ class Level:
                     else:
                         self.mouse.can_place = False
                 if self.mouse.can_place:
+                    build_s.doit()
                     if self.cam.offset.x >= COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH:
                         self.buildings.append(Building(self.mouse.building.bc.b_type, I_Vec2((self.mouse.pos.x + self.cam.offset.x - COL_COUNT*BG_TILE_SIZE) - (self.mouse.pos.x + self.cam.offset.x)%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
                     else:
