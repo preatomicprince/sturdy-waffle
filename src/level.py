@@ -435,11 +435,15 @@ class Level:
                     self.mouse.can_place = False
             if self.mouse.can_place:
                 for key, value in resources.items():
-                    self.res[key] -= button.building.bc.res_cost[key]
-                if self.cam.offset.x >= COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH:
-                    self.buildings.append(Building(self.mouse.building.bc.b_type, I_Vec2((self.mouse.pos.x + self.cam.offset.x - 5000) - (self.mouse.pos.x + self.cam.offset.x)%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
-                else:
-                    self.buildings.append(Building(self.mouse.building.bc.b_type, I_Vec2((self.mouse.pos.x + self.cam.offset.x) - (self.mouse.pos.x + self.cam.offset.x)%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
+                    if self.res[key] >= self.mouse.building.bc.res_cost[key]:
+                        self.res[key] -= self.mouse.building.bc.res_cost[key]
+                    else:
+                        self.mouse.can_place = False
+                if self.mouse.can_place:
+                    if self.cam.offset.x >= COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH:
+                        self.buildings.append(Building(self.mouse.building.bc.b_type, I_Vec2((self.mouse.pos.x + self.cam.offset.x - 5000) - (self.mouse.pos.x + self.cam.offset.x)%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
+                    else:
+                        self.buildings.append(Building(self.mouse.building.bc.b_type, I_Vec2((self.mouse.pos.x + self.cam.offset.x) - (self.mouse.pos.x + self.cam.offset.x)%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
 
         for building in self.buildings:
             if len(building.bc.workers) > 0 and self.mouse.ent_ID == None:
