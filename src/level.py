@@ -147,7 +147,7 @@ class Level:
         pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(10, 10, prog_bar_w, 60))
        
     def _update_buiding(self, building: Building):
-        self.res, self.chars = building.update_level_res(self.res, self.chars)  
+        self.res, self.chars = building.update_level_res(self.res, self.chars) 
         
     def _update_char(self, char: Character):
         if char.cc.aim.x - char.cc.aim.x%Char_Comp.speed <= char.ec.rect.x <= char.cc.aim.x - char.cc.aim.x%Char_Comp.speed + Char_Comp.speed:
@@ -369,6 +369,14 @@ class Level:
         for character in self.chars:
             self._update_char(character)
         self._update_sunlight()
+        
+        alive = 0
+        for i in self.chars:
+            if i.cc.killed == False:
+                alive += 1
+        if alive == 0:
+            self.state = True
+            self.game = True
 
     def left_click(self):
         self.mouse.update_pos()
