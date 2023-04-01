@@ -44,24 +44,24 @@ class Building:
 
         if building_type[b_type] == "House":
             texture = ["./res/house.png", "./res/house_day.png"]
-            self.bc.res["Pop. "] = 10000
+            self.bc.res["Pop. "] = 15000
             self.bc.res_cost["Stone"] = 50
 
         elif building_type[b_type] == "Blood_Farm":
             texture = ["./res/blood.png", "./res/blood_day.png"]
             self.bc.res["Blood"] = 5000 
-            self.bc.res_cost["Stone"] = 50
+            self.bc.res_cost["Wood"] = 20
             
         elif building_type[b_type] == "Mine":
             texture = ["./res/mine.png", "./res/mine_day.png", "./res/mine_grey.png"]
-            self.bc.res["Stone"] = 1000
-            self.bc.res_cost["Wood"] = 50
+            self.bc.res["Stone"] = 300
+            self.bc.res_cost["Wood"] = 20
              
 
         elif building_type[b_type] == "Lumber_Mill":
             texture = ["./res/lumber_mill.png", "./res/lumber_mill_day.png", "./res/lumber_mill_grey.png"]
-            self.bc.res["Wood"] = 2000
-            self.bc.res_cost["Wood"] = 20
+            self.bc.res["Wood"] = 1000
+            self.bc.res_cost["Stone"] = 10
             
 
         elif building_type[b_type] == "Pyramid":

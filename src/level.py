@@ -41,7 +41,7 @@ class sunlight:
         self.rect = pygame.Rect( SCREEN_WIDTH - 400, 0, (COL_COUNT/2)*BG_TILE_SIZE, ROW_COUNT*BG_TILE_SIZE)
         self.sl_pos = I_Vec2(self.rect.x, self.rect.y)
         self.timer = 0
-        self.update_time = 5000
+        self.update_time = 2500
 
 class Level:
     """Struct to hold all level data and objects """
@@ -50,8 +50,8 @@ class Level:
         self.buildings:list(Building) = []
         self.chars:list(Character) = []
         self.res:dict = copy(resources) #count of player resources
-        self.res["Wood"] += 100
-        self.res["Blood"] = 5
+        self.res["Stone"] = 20
+        self.res["Blood"] = 2
         self.sunlight = sunlight()
         self.cam = Camera()
         self.mouse = Mouse()
@@ -313,7 +313,7 @@ class Level:
 
 
         for char in self.chars:
-            if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x + 20, char.ec.rect.y,  10, char.ec.rect.h)):
+            if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x - 20, char.ec.rect.y,  10, char.ec.rect.h)):
                 if char.cc.killed == False:
                     if char.ec.ID not in self.buildings[0].bc.workers:
                         death_s.doit()
@@ -495,13 +495,9 @@ def level_append(level: Level):
     for i in range(1, 17):
         char_frames.append(f"./res/char{i}.png")
     
-    level.add_char(char_frames, I_Vec2(200, 100))
+    level.add_char(char_frames, I_Vec2(100, 100))
 
     level.add_char(char_frames, I_Vec2(200, 200))
-    level.add_char(char_frames, I_Vec2(300, 200))
-    level.add_char(char_frames, I_Vec2(300, 300))
-
-
 
     level.button_list.append(Buttons(I_Vec2(125, 605), "./res/house_button.png", 1))
     
@@ -511,7 +507,7 @@ def level_append(level: Level):
     
     level.button_list.append(Buttons(I_Vec2(725, 605), "./res/lumber_mill_button.png", 4))
 
-    level.buildings.append(Building(5, I_Vec2(400, 200)))
+    level.buildings.append(Building(5, I_Vec2(600, 200)))
 
     offset = (SCREEN_WIDTH/len(resources.items()))
 

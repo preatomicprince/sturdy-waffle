@@ -1,0 +1,4 @@
+#Should just require pygame. 
+#No known conflicts with older or newer versions of pygame or python. 
+#Tested on Python 3.11, 2.9 and 3.8
+pygame
