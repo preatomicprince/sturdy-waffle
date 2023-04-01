@@ -88,14 +88,14 @@ def main()->None:
         """this is if you win the level"""
         if level.state == False and level.game == False:
             events(level)
-            end_text = Text("You win", I_Vec2(100, 100))
+            end_text = Text("Darkness reigns forever. Congratulations!", I_Vec2(100, 100))
             screen.fill((0, 0, 0))
             end_text.draw(screen)
         
         """this is if you lose the game. it will need a quit option and a restart button"""
         if level.state == True and level.game == True:
             events(level)
-            end_text = Text("You lose", I_Vec2(100, 100))
+            end_text = Text("All your vampires died and daylight reigns. You lose.", I_Vec2(100, 100))
             screen.fill((0, 0, 0))
             end_text.draw(screen)
         

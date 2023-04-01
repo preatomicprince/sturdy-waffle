@@ -11,7 +11,7 @@ from resource import resources
 from entity import Ent_Comp
 from camera import Camera
 from UI import Buttons, Text, Tooltip, Bar, bar
-from music import Sounds, click_s
+from music import Sounds, click_s, death_s
 class Keys_Down:
     def __init__(self):
         self.left: bool = 0
@@ -316,6 +316,7 @@ class Level:
             if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x + 20, char.ec.rect.y,  10, char.ec.rect.h)):
                 if char.cc.killed == False:
                     if char.ec.ID not in self.buildings[0].bc.workers:
+                        death_s.doit()
                         self.res["Pop. "] -= 1
                         self.res["Blood"] -= 1
                 char.cc.killed = True

@@ -30,3 +30,4 @@ class Sounds:
         self.name.play()
         
 click_s = Sounds("skiingsound", "./res/click_sound.wav")
+death_s = Sounds("skiingsound", "./res/possible death sound.wav")
