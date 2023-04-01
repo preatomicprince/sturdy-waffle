@@ -85,12 +85,11 @@ class Level:
         
         for y in range(len(self.background)): #draw tiles
             for x in self.background[y]:
-                if x.ec.rect.x > 0 or x.ec.rect.y > 0:
+                screen.blit(x.ec.texture, 
+                (x.ec.rect.x - self.cam.offset.x, x.ec.rect.y - self.cam.offset.y))
+                if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH):
                     screen.blit(x.ec.texture, 
-                    (x.ec.rect.x - self.cam.offset.x, x.ec.rect.y - self.cam.offset.y))
-                    if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH):
-                        screen.blit(x.ec.texture, 
-                        (x.ec.rect.x - self.cam.offset.x + COL_COUNT*BG_TILE_SIZE, x.ec.rect.y - self.cam.offset.y))
+                    (x.ec.rect.x - self.cam.offset.x + COL_COUNT*BG_TILE_SIZE, x.ec.rect.y - self.cam.offset.y))
         
         for building in self.buildings:
             screen.blit(building.ec.texture, ((building.ec.rect.x - self.cam.offset.x), 
@@ -501,17 +500,13 @@ def level_append(level: Level):
 
 
 
-    level.button_list.append(Buttons(I_Vec2(100, 605), "./res/house_button.png", 1))
+    level.button_list.append(Buttons(I_Vec2(125, 605), "./res/house_button.png", 1))
     
-    level.button_list.append(Buttons(I_Vec2(200, 605), "./res/blood_button.png", 2))
+    level.button_list.append(Buttons(I_Vec2(325, 605), "./res/blood_button.png", 2))
   
-    level.button_list.append(Buttons(I_Vec2(300, 605), "./res/mine_button.png", 3))  
+    level.button_list.append(Buttons(I_Vec2(525, 605), "./res/mine_button.png", 3))  
     
-    level.button_list.append(Buttons(I_Vec2(400, 605), "./res/lumber_mill_button.png", 4))
- 
-    level.button_list.append(Buttons(I_Vec2(500, 605), "./res/pyramid_button.png", 5))
-      
-    level.button_list.append(Buttons(I_Vec2(600, 620), "./res/arrow_left.png", 1))
+    level.button_list.append(Buttons(I_Vec2(725, 605), "./res/lumber_mill_button.png", 4))
 
     level.buildings.append(Building(5, I_Vec2(400, 200)))
 
