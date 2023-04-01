@@ -101,7 +101,7 @@ def main()->None:
         
         pygame.display.update()
         #print(clock.get_fps())
-        clock.tick() #Added FPS argument to limit framerate
+        clock.tick(30) #Added FPS argument to limit framerate
 
     #END GAME LOOP
     
