@@ -160,29 +160,28 @@ class Level:
                             break
                 char.cc.aim = I_Vec2(-1, -1)
 
-        
+        if not char.cc.killed:
+            char.cc.dir = I_Vec2(0, 0)
+            if char.cc.aim.x >= 0 or char.cc.aim.y >= 0 and char.cc.killed == False:        
+                if (char.cc.aim.x > 4000 and char.ec.rect.x < 1000):
+                    char.ec.rect.x -= char.cc.vel.x
+                    char.cc.dir.x = -1
+                elif char.ec.rect.x > 4000 and char.cc.aim.x < 1000:
+                    char.ec.rect.x += char.cc.vel.x
+                    char.cc.dir.x = 1
+                elif char.cc.aim.x > char.ec.rect.x:
+                    char.ec.rect.x += char.cc.vel.x
+                    char.cc.dir.x = 1
+                elif char.cc.aim.x < char.ec.rect.x:
+                    char.ec.rect.x -= char.cc.vel.x
+                    char.cc.dir.x = -1
 
-        char.cc.dir = I_Vec2(0, 0)
-        if char.cc.aim.x >= 0 or char.cc.aim.y >= 0 and char.cc.killed == False:        
-            if (char.cc.aim.x > 4000 and char.ec.rect.x < 1000):
-                char.ec.rect.x -= char.cc.vel.x
-                char.cc.dir.x = -1
-            elif char.ec.rect.x > 4000 and char.cc.aim.x < 1000:
-                char.ec.rect.x += char.cc.vel.x
-                char.cc.dir.x = 1
-            elif char.cc.aim.x > char.ec.rect.x:
-                char.ec.rect.x += char.cc.vel.x
-                char.cc.dir.x = 1
-            elif char.cc.aim.x < char.ec.rect.x:
-                char.ec.rect.x -= char.cc.vel.x
-                char.cc.dir.x = -1
-
-            if char.cc.aim.y > char.ec.rect.y:
-                char.ec.rect.y += char.cc.vel.y
-                char.cc.dir.y = 1
-            elif char.cc.aim.y < char.ec.rect.y:
-                char.ec.rect.y -= char.cc.vel.y
-                char.cc.dir.y = -1
+                if char.cc.aim.y > char.ec.rect.y:
+                    char.ec.rect.y += char.cc.vel.y
+                    char.cc.dir.y = 1
+                elif char.cc.aim.y < char.ec.rect.y:
+                    char.ec.rect.y -= char.cc.vel.y
+                    char.cc.dir.y = -1
 
         if char.ec.rect.x >= COL_COUNT*BG_TILE_SIZE:
             char.ec.rect.x = 1
