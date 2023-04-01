@@ -11,7 +11,7 @@ from resource import resources
 from entity import Ent_Comp
 from camera import Camera
 from UI import Buttons, Text, Tooltip, Bar, bar
-
+from music import Sounds, click_s, death_s, build_s
 class Keys_Down:
     def __init__(self):
         self.left: bool = 0
@@ -316,6 +316,7 @@ class Level:
             if self.sunlight.rect.colliderect(pygame.Rect(char.ec.rect.x - 20, char.ec.rect.y,  10, char.ec.rect.h)):
                 if char.cc.killed == False:
                     if char.ec.ID not in self.buildings[0].bc.workers:
+                        death_s.doit()
                         self.res["Pop. "] -= 1
                         self.res["Blood"] -= 1
                 char.cc.killed = True
@@ -388,6 +389,7 @@ class Level:
             for key, value in resources.items():
                 if self.res[key] >= button.building.bc.res_cost[key]: 
                     if button.ec.rect.collidepoint(self.mouse.pos.tup()):
+                            click_s.doit()
                             button.btc.selected = True
                             self.mouse.building = button.building
                             self.mouse.ent_type = type(self.mouse.building)
@@ -441,6 +443,7 @@ class Level:
                     else:
                         self.mouse.can_place = False
                 if self.mouse.can_place:
+                    build_s.doit()
                     if self.cam.offset.x >= COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH:
                         self.buildings.append(Building(self.mouse.building.bc.b_type, I_Vec2((self.mouse.pos.x + self.cam.offset.x - COL_COUNT*BG_TILE_SIZE) - (self.mouse.pos.x + self.cam.offset.x)%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
                     else:
@@ -535,9 +538,11 @@ class Menu():
         
         if self.rect.collidepoint(pos):
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+                
                 self.clicked = True
                 action = True
         if pygame.mouse.get_pressed()[0] == 0:
+            
             self.clicked = False
             
         screen.blit(self.image, (self.rect.x, self.rect.y))

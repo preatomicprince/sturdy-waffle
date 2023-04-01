@@ -20,7 +20,7 @@ track = Music("intro_music", "./res/tracklist_1.wav")
 
 
 """this is for effects"""
-class sounds:
+class Sounds:
     def __init__(self, name, file_loc):
         self.name = name
         self.file_loc = file_loc
@@ -29,4 +29,6 @@ class sounds:
         self.name = pygame.mixer.Sound(self.file_loc)
         self.name.play()
         
-skisound = sounds("skiingsound", r'C:\Users\jstee\OneDrive\Desktop\python\blip.WAV')
+click_s = Sounds("skiingsound", "./res/click_sound.wav")
+death_s = Sounds("skiingsound", "./res/possible death sound.wav")
+build_s = Sounds("skiingsound", "./res/building_placement.wav")
