@@ -38,7 +38,7 @@ class Mouse:
 
 class sunlight:
     def __init__(self):
-        self.rect = pygame.Rect(2500, 0, (COL_COUNT/2)*BG_TILE_SIZE, ROW_COUNT*BG_TILE_SIZE)
+        self.rect = pygame.Rect(1250, 0, (COL_COUNT/2)*BG_TILE_SIZE, ROW_COUNT*BG_TILE_SIZE)
         self.sl_pos = I_Vec2(self.rect.x, self.rect.y)
         self.timer = 0
         self.update_time = 5000
@@ -197,7 +197,7 @@ class Level:
             if self.mouse.building.bc.b_type == 4:
                 for y in range(len(self.background)): #draw tiles
                     for ent in self.background[y]:
-                        if ent.ec.rect.collidepoint(self.mouse.pos.x + self.cam.offset.x, self.mouse.pos.y + self.cam.offset.y ) or ent.ec.rect.collidepoint(self.mouse.pos.x + self.cam.offset.x - 5000, self.mouse.pos.y + self.cam.offset.y ):
+                        if ent.ec.rect.collidepoint(self.mouse.pos.x + self.cam.offset.x, self.mouse.pos.y + self.cam.offset.y ) or ent.ec.rect.collidepoint(self.mouse.pos.x + self.cam.offset.x - COL_COUNT*BG_TILE_SIZE, self.mouse.pos.y + self.cam.offset.y ):
                             if ent.res["Wood"] == 1:
                                 self.mouse.building.ec.texture = self.mouse.building.ec.texture_list[0]
                                 self.mouse.can_place = True
@@ -207,7 +207,7 @@ class Level:
             if self.mouse.building.bc.b_type == 3:
                 for y in range(len(self.background)): #draw tiles
                     for ent in self.background[y]:
-                        if ent.ec.rect.collidepoint(self.mouse.pos.x + self.cam.offset.x, self.mouse.pos.y + self.cam.offset.y ) or ent.ec.rect.collidepoint(self.mouse.pos.x + self.cam.offset.x - 5000, self.mouse.pos.y + self.cam.offset.y ):
+                        if ent.ec.rect.collidepoint(self.mouse.pos.x + self.cam.offset.x, self.mouse.pos.y + self.cam.offset.y ) or ent.ec.rect.collidepoint(self.mouse.pos.x + self.cam.offset.x - COL_COUNT*BG_TILE_SIZE, self.mouse.pos.y + self.cam.offset.y ):
                             if ent.res["Stone"] == 1:
                                 self.mouse.building.ec.texture = self.mouse.building.ec.texture_list[0]
                                 self.mouse.can_place = True
@@ -331,7 +331,7 @@ class Level:
             for ent in self.background[y]:
                 if self.sunlight.rect.x < ent.ec.rect.x < self.sunlight.rect.x + self.sunlight.rect.w:
                     ent.ec.texture = ent.ec.texture_list[1]
-                elif self.sunlight.rect.x < ent.ec.rect.x + 5000 < self.sunlight.rect.x + self.sunlight.rect.w:
+                elif self.sunlight.rect.x < ent.ec.rect.x + COL_COUNT*BG_TILE_SIZE < self.sunlight.rect.x + self.sunlight.rect.w:
                     ent.ec.texture = ent.ec.texture_list[1]
                 else:
                     ent.ec.texture = ent.ec.texture_list[0]
@@ -347,7 +347,7 @@ class Level:
                                     self.res["Pop. "] -= 1
                                     self.res["Blood"] -= 1
                                 char.cc.killed = True
-            elif self.sunlight.rect.x < ent.ec.rect.x + 5000 < self.sunlight.rect.x + self.sunlight.rect.w:
+            elif self.sunlight.rect.x < ent.ec.rect.x + COL_COUNT*BG_TILE_SIZE < self.sunlight.rect.x + self.sunlight.rect.w:
                 if ent.bc.b_type != 5:
                     for i in ent.bc.workers:
                         worker_ID = ent.bc.rm_worker()
@@ -441,7 +441,7 @@ class Level:
                         self.mouse.can_place = False
                 if self.mouse.can_place:
                     if self.cam.offset.x >= COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH:
-                        self.buildings.append(Building(self.mouse.building.bc.b_type, I_Vec2((self.mouse.pos.x + self.cam.offset.x - 5000) - (self.mouse.pos.x + self.cam.offset.x)%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
+                        self.buildings.append(Building(self.mouse.building.bc.b_type, I_Vec2((self.mouse.pos.x + self.cam.offset.x - COL_COUNT*BG_TILE_SIZE) - (self.mouse.pos.x + self.cam.offset.x)%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
                     else:
                         self.buildings.append(Building(self.mouse.building.bc.b_type, I_Vec2((self.mouse.pos.x + self.cam.offset.x) - (self.mouse.pos.x + self.cam.offset.x)%BG_TILE_SIZE, self.mouse.pos.y - self.mouse.pos.y%BG_TILE_SIZE)))
 

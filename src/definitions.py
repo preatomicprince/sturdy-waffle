@@ -5,7 +5,7 @@ TOOLBAR_HEIGHT = 40
 
 BG_TILE_SIZE = 100 #height and width length
 ROW_COUNT = 6
-COL_COUNT = 50
+COL_COUNT = 25
 
 class I_Vec2:
     """"2D integer vector"""
