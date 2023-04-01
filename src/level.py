@@ -163,10 +163,10 @@ class Level:
         if not char.cc.killed:
             char.cc.dir = I_Vec2(0, 0)
             if char.cc.aim.x >= 0 or char.cc.aim.y >= 0 and char.cc.killed == False:        
-                if (char.cc.aim.x > 4000 and char.ec.rect.x < 1000):
+                if char.cc.aim.x > COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH and char.ec.rect.x < SCREEN_WIDTH:
                     char.ec.rect.x -= char.cc.vel.x
                     char.cc.dir.x = -1
-                elif char.ec.rect.x > 4000 and char.cc.aim.x < 1000:
+                elif char.ec.rect.x > COL_COUNT*BG_TILE_SIZE - SCREEN_WIDTH  and char.cc.aim.x < SCREEN_WIDTH:
                     char.ec.rect.x += char.cc.vel.x
                     char.cc.dir.x = 1
                 elif char.cc.aim.x > char.ec.rect.x:
@@ -202,7 +202,7 @@ class Level:
                                 self.mouse.building.ec.texture = self.mouse.building.ec.texture_list[0]
                                 self.mouse.can_place = True
                             else:
-                                self.mouse.building.ec.texture = self.mouse.building.ec.texture_list[1]
+                                self.mouse.building.ec.texture = self.mouse.building.ec.texture_list[2]
                                 self.mouse.can_place = False  
             if self.mouse.building.bc.b_type == 3:
                 for y in range(len(self.background)): #draw tiles
@@ -212,7 +212,7 @@ class Level:
                                 self.mouse.building.ec.texture = self.mouse.building.ec.texture_list[0]
                                 self.mouse.can_place = True
                             else:
-                                self.mouse.building.ec.texture = self.mouse.building.ec.texture_list[1]
+                                self.mouse.building.ec.texture = self.mouse.building.ec.texture_list[2]
                                 self.mouse.can_place = False
 
         self.mouse.tip.visible = False
@@ -428,7 +428,6 @@ class Level:
                         x_aim = (self.mouse.pos.x + self.cam.offset.x - BG_TILE_SIZE/2) - (self.mouse.pos.x + self.cam.offset.x - BG_TILE_SIZE/2)%Char_Comp.speed
 """
                     char.cc.aim = I_Vec2(x_aim, (self.mouse.pos.y + self.cam.offset.y - BG_TILE_SIZE + 20) - (self.mouse.pos.y + self.cam.offset.y - BG_TILE_SIZE + 20)%Char_Comp.speed)
-                    print(f"X: {char.cc.aim.x} y: {char.cc.aim.y}")
                 if char.cc.state == "killed":
                     char.ec.aim = I_Vec2(char.ec.rect.x, char.ec.rect.y)
         

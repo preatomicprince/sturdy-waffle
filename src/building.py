@@ -43,29 +43,29 @@ class Building:
         self.bc = Build_Comp(b_type)
 
         if building_type[b_type] == "House":
-            texture = "./res/house.png"
+            texture = ["./res/house.png", "./res/house_day.png"]
             self.bc.res["Pop. "] = 10000
             self.bc.res_cost["Stone"] = 50
 
         elif building_type[b_type] == "Blood_Farm":
-            texture = "./res/blood.png"
+            texture = ["./res/blood.png", "./res/blood_day.png"]
             self.bc.res["Blood"] = 5000 
             self.bc.res_cost["Wood"] = 50
             
         elif building_type[b_type] == "Mine":
-            texture = ["./res/mine.png", "./res/mine_grey.png"]
+            texture = ["./res/mine.png", "./res/mine_day.png", "./res/mine_grey.png"]
             self.bc.res["Stone"] = 5000
-            self.bc.res_cost["Wood"] = 200 
+            self.bc.res_cost["Wood"] = 20
              
 
         elif building_type[b_type] == "Lumber_Mill":
-            texture = ["./res/lumber_mill.png", "./res/lumber_mill_grey.png"]
+            texture = ["./res/lumber_mill.png", "./res/lumber_mill_day.png", "./res/lumber_mill_grey.png"]
             self.bc.res["Wood"] = 5
             self.bc.res_cost["Wood"] = 5
             
 
         elif building_type[b_type] == "Pyramid":
-            texture = "./res/pyramid.png"
+            texture = ["./res/pyramid.png", "./res/pyramid_day.png"]
             self.bc.res_cost["Wood"] = 1
             self.bc.worker_cap = 10
             
@@ -82,7 +82,6 @@ class Building:
             if self.bc.res[key] <= self.bc.res_time[key] and self.bc.res[key] > 0:
                 if key == "Pop. ":
                     if level_res["Pop. "] < level_res["Blood"]:
-                        print("hoh")
                         level_res[key] += 1
                         self.bc.res_time[key] = 0
                         level_chars.append(Character(None, I_Vec2(self.ec.rect.x - 100, self.ec.rect.y)))
