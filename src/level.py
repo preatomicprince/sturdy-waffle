@@ -150,14 +150,15 @@ class Level:
         self.res, self.chars = building.update_level_res(self.res, self.chars)  
         
     def _update_char(self, char: Character):
-        if char.cc.aim == char.ec.rect:
-            for building in self.buildings:
-                if pygame.Rect.colliderect(char.ec.rect, building.ec.rect):
-                    if len(building.bc.workers) < building.bc.worker_cap:
-                        building.bc.add_worker(char.ec.ID)
-                        char.ec.visible = False
-                        break
-            char.cc.aim = I_Vec2(-1, -1)
+        if char.cc.aim.x - char.cc.aim.x%Char_Comp.speed <= char.ec.rect.x <= char.cc.aim.x - char.cc.aim.x%Char_Comp.speed + Char_Comp.speed:
+            if char.cc.aim.y - char.cc.aim.y%Char_Comp.speed <= char.ec.rect.y <= char.cc.aim.y - char.cc.aim.y%Char_Comp.speed + Char_Comp.speed:
+                for building in self.buildings:
+                    if pygame.Rect.colliderect(char.ec.rect, building.ec.rect):
+                        if len(building.bc.workers) < building.bc.worker_cap:
+                            building.bc.add_worker(char.ec.ID)
+                            char.ec.visible = False
+                            break
+                char.cc.aim = I_Vec2(-1, -1)
 
         
 
@@ -405,13 +406,17 @@ class Level:
             for char in self.chars:
                 x_aim = 0
                 if char.ec.ID == self.mouse.ent_ID:
-                    if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE)/2:
+                    x_aim = (self.mouse.pos.x + self.cam.offset.x - BG_TILE_SIZE/2) - (self.mouse.pos.x + self.cam.offset.x - BG_TILE_SIZE/2)%Char_Comp.speed
+
+                    if x_aim > COL_COUNT*BG_TILE_SIZE:
+                        x_aim -=  COL_COUNT*BG_TILE_SIZE
+                    """if self.cam.offset.x > (COL_COUNT*BG_TILE_SIZE)/2:
                         x_aim = (self.mouse.pos.x + self.cam.offset.x - COL_COUNT*BG_TILE_SIZE - BG_TILE_SIZE/2) - (self.mouse.pos.x + self.cam.offset.x - COL_COUNT*BG_TILE_SIZE- BG_TILE_SIZE/2)%Char_Comp.speed
                         if x_aim < 0:
                             x_aim += COL_COUNT*BG_TILE_SIZE
                     else:
                         x_aim = (self.mouse.pos.x + self.cam.offset.x - BG_TILE_SIZE/2) - (self.mouse.pos.x + self.cam.offset.x - BG_TILE_SIZE/2)%Char_Comp.speed
-
+"""
                     char.cc.aim = I_Vec2(x_aim, (self.mouse.pos.y + self.cam.offset.y - BG_TILE_SIZE + 20) - (self.mouse.pos.y + self.cam.offset.y - BG_TILE_SIZE + 20)%Char_Comp.speed)
                     print(f"X: {char.cc.aim.x} y: {char.cc.aim.y}")
                 if char.cc.state == "killed":
