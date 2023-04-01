@@ -11,7 +11,7 @@ from resource import resources
 from entity import Ent_Comp
 from camera import Camera
 from UI import Buttons, Text, Tooltip, Bar, bar
-
+from music import Sounds, click_s
 class Keys_Down:
     def __init__(self):
         self.left: bool = 0
@@ -389,6 +389,7 @@ class Level:
             for key, value in resources.items():
                 if self.res[key] >= button.building.bc.res_cost[key]: 
                     if button.ec.rect.collidepoint(self.mouse.pos.tup()):
+                            click_s.doit()
                             button.btc.selected = True
                             self.mouse.building = button.building
                             self.mouse.ent_type = type(self.mouse.building)
@@ -544,9 +545,11 @@ class Menu():
         
         if self.rect.collidepoint(pos):
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+                
                 self.clicked = True
                 action = True
         if pygame.mouse.get_pressed()[0] == 0:
+            
             self.clicked = False
             
         screen.blit(self.image, (self.rect.x, self.rect.y))
